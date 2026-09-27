@@ -20,6 +20,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.event.TickEvent;
 import org.joml.*;
 import java.util.*;
 import java.lang.Math;
