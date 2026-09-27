@@ -69,6 +69,7 @@ public final class LeatherWhipHitEffects {
 
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        if (event.phase != TickEvent.Phase.END) return;
         clientTick();
     }
 

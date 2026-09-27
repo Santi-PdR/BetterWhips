@@ -145,6 +145,7 @@ public final class WhipFriendlySupport {
 
     public static void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        if (event.phase != TickEvent.Phase.END) return;
         int now = event.getServer().getTickCount();
         prune(PET_STATES, now);
         prune(PLAYER_STATES, now);

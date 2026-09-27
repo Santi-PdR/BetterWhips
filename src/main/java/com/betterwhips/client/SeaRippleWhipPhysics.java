@@ -54,6 +54,7 @@ public final class SeaRippleWhipPhysics {
     }
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        if (event.phase != TickEvent.Phase.END) return;
         Minecraft mc=Minecraft.getInstance();SeaRippleWhipClientState.tick();SeaRippleWhipEffects.tick();
         if(mc.level!=world){SOCKETS.clear();SeaRippleWhipIdlePhysics.clear();world=mc.level;}
         if(mc.level==null || mc.isPaused())return;

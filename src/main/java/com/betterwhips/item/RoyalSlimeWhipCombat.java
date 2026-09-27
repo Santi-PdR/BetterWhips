@@ -303,6 +303,7 @@ public final class RoyalSlimeWhipCombat {
 
     public static void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        if (event.phase != TickEvent.Phase.END) return;
 
         tickAttackSpeedStacks(event);
 

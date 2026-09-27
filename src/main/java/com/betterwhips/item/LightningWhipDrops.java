@@ -33,6 +33,7 @@ public final class LightningWhipDrops {
 
     public static void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        if (event.phase != TickEvent.Phase.END) return;
         if(PENDING.isEmpty())return;
         int count=PENDING.size();
         while(count-->0) {

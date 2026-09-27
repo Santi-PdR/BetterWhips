@@ -37,6 +37,7 @@ public final class EmeraldWhipProjectileEffects {
 
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        if (event.phase != TickEvent.Phase.END) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null) {
             ACTIVE.clear();

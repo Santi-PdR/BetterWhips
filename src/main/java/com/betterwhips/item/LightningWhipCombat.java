@@ -298,6 +298,7 @@ public final class LightningWhipCombat {
 
     public static void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        if (event.phase != TickEvent.Phase.END) return;
         LightningWhipCombat.tickAttackSpeedStacks(event);
         LightningWhipCombat.tickPendingPrecisionAttacks(event);
         LightningWhipChain.tick(event);

@@ -81,6 +81,7 @@ public final class SeaRippleWhipCombat {
     }
     public static void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        if (event.phase != TickEvent.Phase.END) return;
         long tick=event.getServer().overworld().getGameTime();
         for(ServerPlayer p:event.getServer().getPlayerList().getPlayers())
             if(holding(p) && p.isAlive())STATES.computeIfAbsent(p.getUUID(),key->new State(p,tick));

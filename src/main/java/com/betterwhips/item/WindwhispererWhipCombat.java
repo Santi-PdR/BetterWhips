@@ -312,6 +312,7 @@ public final class WindwhispererWhipCombat {
     public static void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
         if (event.phase != TickEvent.Phase.END) return;
+        if (event.phase != TickEvent.Phase.END) return;
         tickPendingPrecisionAttacks(event);
 
         Iterator<Map.Entry<UUID, ServerLashState>> iterator = ACTIVE.entrySet().iterator();

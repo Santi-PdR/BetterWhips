@@ -45,6 +45,7 @@ public final class SeaRippleWhipProtection {
 
     public static void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        if (event.phase != TickEvent.Phase.END) return;
         long now=event.getServer().overworld().getGameTime();
         for(ServerPlayer player:event.getServer().getPlayerList().getPlayers()) {
             State state=STATES.computeIfAbsent(player.getUUID(),id->new State());

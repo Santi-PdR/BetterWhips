@@ -75,6 +75,7 @@ public final class LightningWhipHitEffects {
     }
     public static void clear() { ACTIVE.clear(); IMPACTS.clear(); }
     public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
         if (event.phase != TickEvent.Phase.END) return; clientTick(); }
     public static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) { clear(); }
     public static void onRenderLevel(RenderLevelStageEvent event) {

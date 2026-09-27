@@ -64,6 +64,7 @@ public final class LightningWhipChain {
 
     public static void tick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        if (event.phase != TickEvent.Phase.END) return;
         Iterator<ActiveChain> iterator = ACTIVE.iterator();
         while (iterator.hasNext()) {
             ActiveChain chain = iterator.next();
