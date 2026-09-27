@@ -24,11 +24,11 @@ vec3 safeNormalize(vec3 value, vec3 fallback) {
     return fallback;
 }
 
-float seed;
-float strand;
-float mode;
-float clock;
-vec2 interval;
+float seed = 0.0;
+float strand = 0.0;
+float mode = 0.0;
+float clock = 0.0;
+vec2 interval = vec2(0.0);
 float hash(float p) { return fract(sin(p*127.1+seed*3.17)*43758.5453); }
 float jag(float x,float key) {
     float i=floor(x);
