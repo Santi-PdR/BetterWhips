@@ -6,12 +6,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.registries.DeferredHolder;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
 public final class ModCreativeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, "better_whips");
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN = CREATIVE_TABS.register("main", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.better_whips.main")).icon(() -> new ItemStack((ItemLike)ModItems.ROYAL_SLIME_WHIP.get())).displayItems((p, o) -> {
+    public static final RegistryObject<CreativeModeTab> MAIN = CREATIVE_TABS.register("main", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.better_whips.main")).icon(() -> new ItemStack((ItemLike)ModItems.ROYAL_SLIME_WHIP.get())).displayItems((p, o) -> {
         o.accept((ItemLike)ModItems.ROYAL_SLIME_WHIP.get());
         o.accept((ItemLike)ModItems.LEATHER_WHIP.get());
         o.accept((ItemLike)ModItems.LIGHTNING_WHIP.get());
