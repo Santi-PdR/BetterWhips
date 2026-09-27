@@ -2,12 +2,12 @@ package com.betterwhips.item;
 
 import com.betterwhips.registry.ModEffects;
 import com.betterwhips.registry.ModItems;
-import net.minecraft.core.Holder;
+
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.event.entity.living.LivingIncomingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.event.TickEvent;
 
@@ -23,7 +23,7 @@ public final class SeaRippleWhipProtection {
 
     private SeaRippleWhipProtection() {}
 
-    public static void onIncomingDamage(LivingIncomingDamageEvent event) {
+    public static void onIncomingDamage(LivingHurtEvent event) {
         if(!(event.getEntity() instanceof ServerPlayer player) || !holding(player) || !(event.getAmount()>0.0F))return;
         long now=now(player);
         State state=STATES.computeIfAbsent(player.getUUID(),id->new State());
@@ -39,8 +39,8 @@ public final class SeaRippleWhipProtection {
         event.setAmount(Math.max(0.0F,event.getAmount()-reduction));
         state.protectionUntil=now+PROTECTION_TICKS;
         state.cooldownUntil=now+COOLDOWN_TICKS;
-        player.removeEffect(ModEffects.WATER_PROTECTION_READY);
-        applyMarker(player,ModEffects.WATER_PROTECTION_COOLDOWN,COOLDOWN_TICKS);
+        player.removeEffect(ModEffects.WATER_PROTECTION_READY.get());
+        applyMarker(player,ModEffects.WATER_PROTECTION_COOLDOWN.get(),COOLDOWN_TICKS);
     }
 
     public static void onServerTick(TickEvent.ServerTickEvent event) {
@@ -68,23 +68,23 @@ public final class SeaRippleWhipProtection {
         }
 
         if(now<state.cooldownUntil) {
-            player.removeEffect(ModEffects.WATER_PROTECTION_READY);
+            player.removeEffect(ModEffects.WATER_PROTECTION_READY.get());
             int remaining=(int)Math.max(1L,Math.min(Integer.MAX_VALUE,state.cooldownUntil-now));
-            ensureCountdownMarker(player,ModEffects.WATER_PROTECTION_COOLDOWN,remaining);
+            ensureCountdownMarker(player,ModEffects.WATER_PROTECTION_COOLDOWN.get(),remaining);
             return;
         }
 
-        player.removeEffect(ModEffects.WATER_PROTECTION_COOLDOWN);
+        player.removeEffect(ModEffects.WATER_PROTECTION_COOLDOWN.get());
         ensureReadyMarker(player);
     }
 
     private static void ensureReadyMarker(ServerPlayer player) {
-        MobEffectInstance current=player.getEffect(ModEffects.WATER_PROTECTION_READY);
+        MobEffectInstance current=player.getEffect(ModEffects.WATER_PROTECTION_READY.get());
         if(current==null || current.getDuration()<=10)
-            applyMarker(player,ModEffects.WATER_PROTECTION_READY,READY_MARKER_REFRESH);
+            applyMarker(player,ModEffects.WATER_PROTECTION_READY.get(),READY_MARKER_REFRESH);
     }
 
-    private static void ensureCountdownMarker(ServerPlayer player,Holder<MobEffect> effect,int remaining) {
+    private static void ensureCountdownMarker(ServerPlayer player,MobEffect effect,int remaining) {
         MobEffectInstance current=player.getEffect(effect);
         if(current==null || Math.abs(current.getDuration()-remaining)>5)applyMarker(player,effect,remaining);
     }
@@ -94,8 +94,8 @@ public final class SeaRippleWhipProtection {
     }
 
     private static void clearMarkers(ServerPlayer player) {
-        player.removeEffect(ModEffects.WATER_PROTECTION_READY);
-        player.removeEffect(ModEffects.WATER_PROTECTION_COOLDOWN);
+        player.removeEffect(ModEffects.WATER_PROTECTION_READY.get());
+        player.removeEffect(ModEffects.WATER_PROTECTION_COOLDOWN.get());
     }
 
     private static boolean holding(ServerPlayer player) {
