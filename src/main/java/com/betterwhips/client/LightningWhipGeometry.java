@@ -25,9 +25,10 @@ final class LightningWhipGeometry {
         for (Face face : faces) {
             int faceLight = face.emissive ? LightTexture.FULL_BRIGHT : light;
             for (Vertex v : face.vertices) {
-                consumer.addVertex(pose.pose(), v.x, v.y, v.z).setColor(255, 255, 255, 255)
-                    .setUv(v.u, v.v).setOverlay(overlay).setLight(faceLight)
-                    .setNormal(pose, face.normal.x, face.normal.y, face.normal.z);
+                consumer.vertex(pose.pose(), v.x, v.y, v.z).color(255, 255, 255, 255)
+                    .uv(v.u, v.v).overlayCoords(overlay).uv2(faceLight)
+                    .normal(pose, face.normal.x, face.normal.y, face.normal.z);
+                    consumer.endVertex();
             }
         }
     }

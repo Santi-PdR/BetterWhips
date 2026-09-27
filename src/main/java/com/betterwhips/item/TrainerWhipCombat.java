@@ -2340,13 +2340,13 @@ public final class TrainerWhipCombat {
             if (isOwnerFriendly(owner, target)) {
                 return true;
             }
-            float enchantedDamage = EnchantmentHelper.modifyDamage(
+            float enchantedDamage = WhipEnchantments.modifyDamage(
                     level, weapon, target, source, damageAmount);
             float beforeDamage = target.getHealth() + target.getAbsorptionAmount();
             Vec3 motionBefore = target.getDeltaMovement();
             boolean damaged = target.hurt(source, enchantedDamage);
             if (!damaged) return false;
-            EnchantmentHelper.doPostAttackEffectsWithItemSource(level, target, source, weapon);
+            WhipEnchantments.doPostAttackEffects(level, target, source, weapon);
             target.setDeltaMovement(motionBefore);
             target.hurtMarked = true;
             WhipDamageDebug.record(owner, Math.max(0.0F, beforeDamage
@@ -2373,7 +2373,7 @@ public final class TrainerWhipCombat {
             return true;
         }
 
-        float enchantedDamage = EnchantmentHelper.modifyDamage(
+        float enchantedDamage = WhipEnchantments.modifyDamage(
                 level, weapon, target, source, damageAmount);
 
         float beforeDamage = target.getHealth() + target.getAbsorptionAmount();
@@ -2383,7 +2383,7 @@ public final class TrainerWhipCombat {
             return false;
         }
 
-        EnchantmentHelper.doPostAttackEffectsWithItemSource(level, target, source, weapon);
+        WhipEnchantments.doPostAttackEffects(level, target, source, weapon);
         target.setDeltaMovement(motionBefore);
         target.hurtMarked = true;
         WhipDamageDebug.record(owner, Math.max(0.0F, beforeDamage - (target.getHealth() + target.getAbsorptionAmount())));

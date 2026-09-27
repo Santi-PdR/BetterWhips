@@ -94,7 +94,7 @@ public final class WhipEntityTargeting {
         LivingEntity livingParent = livingParent(target);
         float finalDamage = damageAmount;
         if (livingParent != null) {
-            finalDamage = EnchantmentHelper.modifyDamage(level, weapon, livingParent, source, damageAmount);
+            finalDamage = WhipEnchantments.modifyDamage(level, weapon, livingParent, source, damageAmount);
         }
         if (finalDamage <= 0.0F) {
             return false;
@@ -102,7 +102,7 @@ public final class WhipEntityTargeting {
 
         boolean damaged = target.hurt(source, finalDamage);
         if (damaged && livingParent != null) {
-            EnchantmentHelper.doPostAttackEffectsWithItemSource(level, livingParent, source, weapon);
+            WhipEnchantments.doPostAttackEffects(level, livingParent, source, weapon);
         }
         return damaged;
     }

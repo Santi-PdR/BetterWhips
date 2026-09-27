@@ -280,11 +280,12 @@ final class WhipGuiFastRenderer {
     private static void vertex(VertexConsumer consumer, PoseStack.Pose pose,
                                float x, float y, float z, float u, float v,
                                int red, int green, int blue, int alpha, int overlay) {
-        consumer.addVertex(pose.pose(), x, y, z)
-                .setColor(red, green, blue, alpha)
-                .setUv(u, v)
-                .setOverlay(overlay)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setNormal(pose, 0.0F, 0.0F, 1.0F);
+        consumer.vertex(pose.pose(), x, y, z)
+                .color(red, green, blue, alpha)
+                .uv(u, v)
+                .overlayCoords(overlay)
+                .uv2(LightTexture.FULL_BRIGHT)
+                .normal(pose, 0.0F, 0.0F, 1.0F);
+                    consumer.endVertex();
     }
 }

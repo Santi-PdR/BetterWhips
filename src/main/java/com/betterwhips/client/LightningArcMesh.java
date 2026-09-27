@@ -129,8 +129,9 @@ final class LightningArcMesh {
     private static void vertex(VertexConsumer out, Knot p, float angle, int seed, int strand,
             int scaleAndLayer, int start, int end) {
 
-        out.addVertex(p.x,p.y,p.z).setColor(seed,strand,scaleAndLayer,p.alpha)
-            .setUv(p.u,angle).setUv1(p.nx,p.ny).setUv2(start,end).setNormal(p.tx,p.ty,p.tz);
+        out.vertex(p.x,p.y,p.z).color(seed,strand,scaleAndLayer,p.alpha)
+            .uv(p.u,angle).overlayCoords(p.nx,p.ny).uv2(start,end).normal(p.tx,p.ty,p.tz);
+                    out.endVertex();
     }
     private record Knot(float x,float y,float z,float tx,float ty,float tz,int nx,int ny,float u,int alpha) {}
 }

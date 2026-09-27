@@ -2077,9 +2077,9 @@ public final class RoyalSlimeWhipCombat {
             return true;
         }
 
-        float enchantedDamage = EnchantmentHelper.modifyDamage(
+        float enchantedDamage = WhipEnchantments.modifyDamage(
                 level, weapon, target, source, damageAmount);
-        float knockback = EnchantmentHelper.modifyKnockback(
+        float knockback = WhipEnchantments.modifyKnockback(
                 level, weapon, target, source, 0.35F);
 
         float beforeDamage = target.getHealth() + target.getAbsorptionAmount();
@@ -2092,7 +2092,7 @@ public final class RoyalSlimeWhipCombat {
         if (knockback > 0.0F) {
             target.knockback(knockback, owner.getX() - target.getX(), owner.getZ() - target.getZ());
         }
-        EnchantmentHelper.doPostAttackEffectsWithItemSource(level, target, source, weapon);
+        WhipEnchantments.doPostAttackEffects(level, target, source, weapon);
         grantAttackSpeedStack(owner);
 
         level.playSound(null, target.blockPosition(), SoundEvents.SLIME_ATTACK,

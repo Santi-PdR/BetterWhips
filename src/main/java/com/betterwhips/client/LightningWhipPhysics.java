@@ -2038,7 +2038,8 @@ public final class LightningWhipPhysics {
         }
 
         private void trailVertex(PoseStack.Pose pose, VertexConsumer consumer, Vec3 camera, Vec3 point, int red, int green, int blue, int alpha) {
-            consumer.addVertex(pose.pose(), (float)(point.x - camera.x), (float)(point.y - camera.y), (float)(point.z - camera.z)).setColor(red, green, blue, Mth.clamp(alpha, 0, 255));
+            consumer.vertex(pose.pose(), (float)(point.x - camera.x), (float)(point.y - camera.y), (float)(point.z - camera.z)).color(red, green, blue, Mth.clamp(alpha, 0, 255));
+                    consumer.endVertex();
         }
     }
 

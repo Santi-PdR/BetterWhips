@@ -107,7 +107,7 @@ public final class SeaRippleWhipCombat {
     }
     private static void boost(Player p,boolean active) {
         var attribute=p.getAttribute(Attributes.ATTACK_SPEED);if(attribute==null)return;
-        if(active && !attribute.hasModifier(ATTACK_BOOST))attribute.addTransientModifier(
+        if(active && !attribute.hasModifier(com.betterwhips.util.WhipAttributeIds.uuid(ATTACK_BOOST)))attribute.addTransientModifier(
             new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(ATTACK_BOOST),WATER_ATTACK_SPEED_BONUS,AttributeModifier.Operation.MULTIPLY_TOTAL));
         else if(!active)attribute.removeModifier(com.betterwhips.util.WhipAttributeIds.uuid(ATTACK_BOOST));
     }
@@ -177,7 +177,7 @@ public final class SeaRippleWhipCombat {
     private static boolean damage(ServerPlayer owner,LivingEntity target,float amount) {
         if(amount<=0 || !target.isAlive())return false;
         DamageSource source=owner.damageSources().playerAttack(owner);
-        float modified=EnchantmentHelper.modifyDamage(owner.serverLevel(),owner.getMainHandItem(),target,source,amount);
+        float modified=WhipEnchantments.modifyDamage(owner.serverLevel(),owner.getMainHandItem(),target,source,amount);
         float before=target.getHealth()+target.getAbsorptionAmount();
         int oldFrames=target.invulnerableTime;
 
@@ -186,7 +186,7 @@ public final class SeaRippleWhipCombat {
         try { hit=target.hurt(source,modified); }
         finally { target.invulnerableTime=Math.max(oldFrames,target.invulnerableTime); }
         if(!hit)return false;
-        EnchantmentHelper.doPostAttackEffectsWithItemSource(owner.serverLevel(),target,source,owner.getMainHandItem());
+        WhipEnchantments.doPostAttackEffects(owner.serverLevel(),target,source,owner.getMainHandItem());
         WhipDamageDebug.record(owner,Math.max(0,before-target.getHealth()-target.getAbsorptionAmount()));
         return true;
     }

@@ -227,11 +227,12 @@ public final class EmeraldWhipProjectileEffects {
 
     private static void vertex(PoseStack.Pose pose, VertexConsumer consumer, Vec3 camera,
                                Vec3 point, int r, int g, int b, int a) {
-        consumer.addVertex(pose.pose(),
+        consumer.vertex(pose.pose(),
                         (float) (point.x - camera.x),
                         (float) (point.y - camera.y),
                         (float) (point.z - camera.z))
-                .setColor(r, g, b, Mth.clamp(a, 0, 255));
+                .color(r, g, b, Mth.clamp(a, 0, 255));
+                    consumer.endVertex();
     }
 
     private static final class VisualBolt {

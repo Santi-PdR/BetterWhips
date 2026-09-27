@@ -1010,12 +1010,13 @@ final class DestructionWhipGeometry {
             PoseStack.Pose pose = stack.last();
             VertexData[] vertices = useRelative ? relative : absolute;
             for (VertexData vertex : vertices) {
-                consumer.addVertex(pose.pose(), vertex.x, vertex.y, vertex.z)
-                        .setColor(red, green, blue, alpha)
-                        .setUv(vertex.u, vertex.v)
-                        .setOverlay(overlay)
-                        .setLight(light)
-                        .setNormal(pose, nx, ny, nz);
+                consumer.vertex(pose.pose(), vertex.x, vertex.y, vertex.z)
+                        .color(red, green, blue, alpha)
+                        .uv(vertex.u, vertex.v)
+                        .overlayCoords(overlay)
+                        .uv2(light)
+                        .normal(pose, nx, ny, nz);
+                    consumer.endVertex();
             }
         }
 
@@ -1040,12 +1041,13 @@ final class DestructionWhipGeometry {
             int g = Math.max(0, Math.min(255, green));
             int b = Math.max(0, Math.min(255, blue));
             for (VertexData vertex : vertices) {
-                consumer.addVertex(pose.pose(), vertex.x, vertex.y, vertex.z)
-                        .setColor(r, g, b, clampedAlpha)
-                        .setUv(0.5F, 0.5F)
-                        .setOverlay(overlay)
-                        .setLight(light)
-                        .setNormal(pose, nx, ny, nz);
+                consumer.vertex(pose.pose(), vertex.x, vertex.y, vertex.z)
+                        .color(r, g, b, clampedAlpha)
+                        .uv(0.5F, 0.5F)
+                        .overlayCoords(overlay)
+                        .uv2(light)
+                        .normal(pose, nx, ny, nz);
+                    consumer.endVertex();
             }
         }
 
@@ -1063,12 +1065,13 @@ final class DestructionWhipGeometry {
                 int r = Mth.clamp(Math.round(leftRed + (rightRed - leftRed) * t), 0, 255);
                 int g = Mth.clamp(Math.round(leftGreen + (rightGreen - leftGreen) * t), 0, 255);
                 int b = Mth.clamp(Math.round(leftBlue + (rightBlue - leftBlue) * t), 0, 255);
-                consumer.addVertex(pose.pose(), vertex.x, vertex.y, vertex.z)
-                        .setColor(r, g, b, clampedAlpha)
-                        .setUv(0.5F, 0.5F)
-                        .setOverlay(overlay)
-                        .setLight(light)
-                        .setNormal(pose, nx, ny, nz);
+                consumer.vertex(pose.pose(), vertex.x, vertex.y, vertex.z)
+                        .color(r, g, b, clampedAlpha)
+                        .uv(0.5F, 0.5F)
+                        .overlayCoords(overlay)
+                        .uv2(light)
+                        .normal(pose, nx, ny, nz);
+                    consumer.endVertex();
             }
         }
     }

@@ -422,11 +422,12 @@ public final class WhipShockwaveEffects {
     private static void vertex(PoseStack.Pose pose, VertexConsumer consumer,
                                float x, float y, float z, int red, int green, int blue,
                                float u, float v, int light, Direction direction) {
-        consumer.addVertex(pose.pose(), x, y, z)
-                .setColor(red, green, blue, 255)
-                .setUv(u, v)
-                .setLight(light)
-                .setNormal(pose, direction.getStepX(), direction.getStepY(), direction.getStepZ());
+        consumer.vertex(pose.pose(), x, y, z)
+                .color(red, green, blue, 255)
+                .uv(u, v)
+                .uv2(light)
+                .normal(pose, direction.getStepX(), direction.getStepY(), direction.getStepZ());
+                    consumer.endVertex();
     }
 
     private static int shadeByte(float shade) {

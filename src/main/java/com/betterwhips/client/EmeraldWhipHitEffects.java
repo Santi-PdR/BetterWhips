@@ -629,9 +629,10 @@ public final class EmeraldWhipHitEffects {
             int b,
             int a
     ) {
-        vertices.addVertex(pose, (float) position.x, (float) position.y, (float) position.z)
-                .setUv(u, v)
-                .setColor(r, g, b, Mth.clamp(a, 0, 255));
+        vertices.vertex(pose, (float) position.x, (float) position.y, (float) position.z)
+                .uv(u, v)
+                .color(r, g, b, Mth.clamp(a, 0, 255));
+                    vertices.endVertex();
     }
 
     private static float smoothstep(float edge0, float edge1, float value) {

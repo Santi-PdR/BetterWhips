@@ -60,21 +60,7 @@ public final class LeatherWhipPhysics {
             BetterWhipsMod.MOD_ID, "textures/item/leather_whip.png");
     private static final RenderType RENDER_TYPE = RenderType.entityTranslucent(TEXTURE);
 
-    private static final RenderType TIP_TRAIL_RENDER_TYPE = RenderType.create(
-            "better_whips_leather_whip_tip_trail",
-            DefaultVertexFormat.POSITION_COLOR,
-            VertexFormat.Mode.QUADS,
-            16_384,
-            false,
-            true,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RenderType.RENDERTYPE_LIGHTNING_SHADER)
-                    .setTransparencyState(RenderType.LIGHTNING_TRANSPARENCY)
-                    .setCullState(RenderType.NO_CULL)
-                    .setDepthTestState(RenderType.LEQUAL_DEPTH_TEST)
-                    .setWriteMaskState(RenderType.COLOR_WRITE)
-                    .setOutputState(RenderType.MAIN_TARGET)
-                    .createCompositeState(false));
+    private static final RenderType TIP_TRAIL_RENDER_TYPE = RenderType.lightning();
 
     private static final int SEGMENTS = LeatherWhipGeometry.SEGMENT_COUNT;
     private static final int POINTS = SEGMENTS + 1;
@@ -2081,11 +2067,12 @@ public final class LeatherWhipPhysics {
 
         private void trailVertex(PoseStack.Pose pose, VertexConsumer consumer, Vec3 camera,
                                  Vec3 point, int red, int green, int blue, int alpha) {
-            consumer.addVertex(pose.pose(),
+            consumer.vertex(pose.pose(),
                             (float)(point.x - camera.x),
                             (float)(point.y - camera.y),
                             (float)(point.z - camera.z))
-                    .setColor(red, green, blue, Mth.clamp(alpha, 0, 255));
+                    .color(red, green, blue, Mth.clamp(alpha, 0, 255));
+                    consumer.endVertex();
         }
     }
 

@@ -2408,9 +2408,9 @@ public final class AmethystWhipCombat {
             return true;
         }
 
-        float enchantedDamage = EnchantmentHelper.modifyDamage(
+        float enchantedDamage = WhipEnchantments.modifyDamage(
                 level, weapon, target, source, damageAmount);
-        float knockback = EnchantmentHelper.modifyKnockback(
+        float knockback = WhipEnchantments.modifyKnockback(
                 level, weapon, target, source, 0.00F);
 
         float beforeDamage = target.getHealth() + target.getAbsorptionAmount();
@@ -2426,7 +2426,7 @@ public final class AmethystWhipCombat {
 
             spawnAmethystShards(level, owner, target, contact, unscaledDamageAmount);
         }
-        EnchantmentHelper.doPostAttackEffectsWithItemSource(level, target, source, weapon);
+        WhipEnchantments.doPostAttackEffects(level, target, source, weapon);
         target.setDeltaMovement(motionBefore);
         if (knockback > 0.0F) {
             target.knockback(knockback, owner.getX() - target.getX(), owner.getZ() - target.getZ());

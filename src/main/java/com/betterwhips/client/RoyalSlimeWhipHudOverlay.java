@@ -142,8 +142,8 @@ public final class RoyalSlimeWhipHudOverlay {
             }
 
             if (buffer == null) {
-                buffer = Tesselator.getInstance().begin(
-                        VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+                buffer = Tesselator.getInstance().getBuilder();
+                buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
             }
 
             float glowRadius = full
@@ -159,7 +159,7 @@ public final class RoyalSlimeWhipHudOverlay {
             addGlowQuad(buffer, matrix, pose.x, centerY, glowRadius, r, g, b, a);
         }
         if (buffer != null) {
-            BufferUploader.drawWithShader(buffer.buildOrThrow());
+            BufferUploader.drawWithShader(buffer.end());
         }
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -176,10 +176,14 @@ public final class RoyalSlimeWhipHudOverlay {
         float top = cy - radius;
         float bottom = cy + radius;
         float z = 0.0F;
-        buffer.addVertex(matrix, left, bottom, z).setUv(0.0F, 1.0F).setColor(r, g, b, a);
-        buffer.addVertex(matrix, right, bottom, z).setUv(1.0F, 1.0F).setColor(r, g, b, a);
-        buffer.addVertex(matrix, right, top, z).setUv(1.0F, 0.0F).setColor(r, g, b, a);
-        buffer.addVertex(matrix, left, top, z).setUv(0.0F, 0.0F).setColor(r, g, b, a);
+        buffer.vertex(matrix, left, bottom, z).uv(0.0F, 1.0F).color(r, g, b, a);
+                    buffer.endVertex();
+        buffer.vertex(matrix, right, bottom, z).uv(1.0F, 1.0F).color(r, g, b, a);
+                    buffer.endVertex();
+        buffer.vertex(matrix, right, top, z).uv(1.0F, 0.0F).color(r, g, b, a);
+                    buffer.endVertex();
+        buffer.vertex(matrix, left, top, z).uv(0.0F, 0.0F).color(r, g, b, a);
+                    buffer.endVertex();
     }
 
     private static MarkerPose markerPose(int index, float centerX, float eased) {

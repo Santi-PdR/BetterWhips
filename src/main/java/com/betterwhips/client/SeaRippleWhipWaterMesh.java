@@ -33,8 +33,9 @@ public final class SeaRippleWhipWaterMesh {
         return unit(rotateAround(reference,tangent,Mth.clamp(signed,-maxTwist,maxTwist)),reference);
     }
     private static void vertex(PoseStack p,VertexConsumer out,Vec3 v,float u,float w,float alpha,float hue) {
-        out.addVertex(p.last().pose(),(float)v.x,(float)v.y,(float)v.z).setUv(u,w)
-            .setColor(.28f+hue*.25f,.78f,1f,Mth.clamp(alpha,0,1));
+        out.vertex(p.last().pose(),(float)v.x,(float)v.y,(float)v.z).uv(u,w)
+            .color(.28f+hue*.25f,.78f,1f,Mth.clamp(alpha,0,1));
+                    out.endVertex();
     }
     private static void quad(PoseStack p,VertexConsumer out,Vec3 a,Vec3 b,Vec3 c,Vec3 d,
             float u0,float u1,float v0,float v1,float alpha,float hue) {

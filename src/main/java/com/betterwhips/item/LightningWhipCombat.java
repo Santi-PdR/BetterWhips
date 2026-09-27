@@ -886,7 +886,7 @@ public final class LightningWhipCombat {
             return true;
         }
 
-        float enchantedDamage = EnchantmentHelper.modifyDamage(level, weapon, target, source, damageAmount);
+        float enchantedDamage = WhipEnchantments.modifyDamage(level, weapon, target, source, damageAmount);
         float beforeDamage = target.getHealth() + target.getAbsorptionAmount();
         Vec3 motionBefore = target.getDeltaMovement();
         boolean damaged = target.hurt(source, enchantedDamage);
@@ -906,7 +906,7 @@ public final class LightningWhipCombat {
             LightningWhipChain.start(level, owner, target, enchantedDamage * 0.10F, level.random.nextLong());
         }
 
-        EnchantmentHelper.doPostAttackEffectsWithItemSource(level, target, source, weapon);
+        WhipEnchantments.doPostAttackEffects(level, target, source, weapon);
         WhipDamageDebug.record(owner, Math.max(0.0F,
                 beforeDamage - (target.getHealth() + target.getAbsorptionAmount())));
         LightningWhipCombat.commandOwnedPets(level, owner, target);

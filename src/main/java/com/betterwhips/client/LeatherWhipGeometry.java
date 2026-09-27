@@ -427,12 +427,13 @@ final class LeatherWhipGeometry {
             PoseStack.Pose pose = stack.last();
             VertexData[] vertices = useRelative ? relative : absolute;
             for (VertexData vertex : vertices) {
-                consumer.addVertex(pose.pose(), vertex.x, vertex.y, vertex.z)
-                        .setColor(red, green, blue, alpha)
-                        .setUv(vertex.u, vertex.v)
-                        .setOverlay(overlay)
-                        .setLight(light)
-                        .setNormal(pose, nx, ny, nz);
+                consumer.vertex(pose.pose(), vertex.x, vertex.y, vertex.z)
+                        .color(red, green, blue, alpha)
+                        .uv(vertex.u, vertex.v)
+                        .overlayCoords(overlay)
+                        .uv2(light)
+                        .normal(pose, nx, ny, nz);
+                    consumer.endVertex();
             }
         }
     }

@@ -37,7 +37,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.client.NeoForgeRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
@@ -63,23 +63,9 @@ public final class EmeraldWhipPhysics {
     private static final RenderType RENDER_TYPE = RenderType.entityTranslucent(TEXTURE);
 
     private static final RenderType SPECTRAL_RENDER_TYPE =
-            NeoForgeRenderTypes.getUnlitTranslucent(TEXTURE);
+            RenderType.entityTranslucent(TEXTURE);
 
-    private static final RenderType TIP_TRAIL_RENDER_TYPE = RenderType.create(
-            "better_whips_emerald_whip_tip_trail",
-            DefaultVertexFormat.POSITION_COLOR,
-            VertexFormat.Mode.QUADS,
-            16_384,
-            false,
-            true,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RenderType.RENDERTYPE_LIGHTNING_SHADER)
-                    .setTransparencyState(RenderType.LIGHTNING_TRANSPARENCY)
-                    .setCullState(RenderType.NO_CULL)
-                    .setDepthTestState(RenderType.LEQUAL_DEPTH_TEST)
-                    .setWriteMaskState(RenderType.COLOR_WRITE)
-                    .setOutputState(RenderType.MAIN_TARGET)
-                    .createCompositeState(false));
+    private static final RenderType TIP_TRAIL_RENDER_TYPE = RenderType.lightning();
 
     private static final int SEGMENTS = EmeraldWhipGeometry.SEGMENT_COUNT;
     private static final int POINTS = SEGMENTS + 1;
@@ -963,8 +949,9 @@ public final class EmeraldWhipPhysics {
 
     private static void connectorVertex(PoseStack.Pose pose, VertexConsumer consumer, Vec3 point,
                                         int red, int green, int blue, int alpha) {
-        consumer.addVertex(pose.pose(), (float) point.x, (float) point.y, (float) point.z)
-                .setColor(red, green, blue, Mth.clamp(alpha, 0, 255));
+        consumer.vertex(pose.pose(), (float) point.x, (float) point.y, (float) point.z)
+                .color(red, green, blue, Mth.clamp(alpha, 0, 255));
+                    consumer.endVertex();
     }
 
     private static void renderPhysicalConnectorWorld(PoseStack.Pose pose, VertexConsumer consumer,
@@ -1014,11 +1001,12 @@ public final class EmeraldWhipPhysics {
     private static void worldConnectorVertex(PoseStack.Pose pose, VertexConsumer consumer,
                                              Vec3 camera, Vec3 point,
                                              int red, int green, int blue, int alpha) {
-        consumer.addVertex(pose.pose(),
+        consumer.vertex(pose.pose(),
                         (float)(point.x - camera.x),
                         (float)(point.y - camera.y),
                         (float)(point.z - camera.z))
-                .setColor(red, green, blue, Mth.clamp(alpha, 0, 255));
+                .color(red, green, blue, Mth.clamp(alpha, 0, 255));
+                    consumer.endVertex();
     }
 
     static void renderFirstPersonRootBridge(PoseStack poseStack, RenderContext context,
@@ -2841,11 +2829,12 @@ public final class EmeraldWhipPhysics {
 
         private void trailVertex(PoseStack.Pose pose, VertexConsumer consumer, Vec3 camera,
                                  Vec3 point, int red, int green, int blue, int alpha) {
-            consumer.addVertex(pose.pose(),
+            consumer.vertex(pose.pose(),
                             (float)(point.x - camera.x),
                             (float)(point.y - camera.y),
                             (float)(point.z - camera.z))
-                    .setColor(red, green, blue, Mth.clamp(alpha, 0, 255));
+                    .color(red, green, blue, Mth.clamp(alpha, 0, 255));
+                    consumer.endVertex();
         }
     }
 
