@@ -3,18 +3,18 @@ package com.betterwhips.client;
 import com.betterwhips.network.AmethystWhipNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraftforge.network.handling.IPayloadContext;
+import com.betterwhips.network.WhipNetwork;
 
 public final class AmethystWhipClientNetwork {
     private AmethystWhipClientNetwork() {}
 
     public static void handleAttackSpeedStacks(AmethystWhipNetwork.AttackSpeedStacksPayload payload,
-                                               IPayloadContext context) {
+                                               WhipNetwork.Context context) {
 
     }
 
     public static void handleAmethystProjectile(AmethystWhipNetwork.AmethystProjectilePayload payload,
-                                                 IPayloadContext context) {
+                                                 WhipNetwork.Context context) {
         context.enqueueWork(() -> AmethystWhipProjectileEffects.spawn(
                 payload.x(), payload.y(), payload.z(),
                 payload.vx(), payload.vy(), payload.vz(),
@@ -22,14 +22,14 @@ public final class AmethystWhipClientNetwork {
     }
 
     public static void handleHitGlowBurst(AmethystWhipNetwork.HitGlowBurstPayload payload,
-                                          IPayloadContext context) {
+                                          WhipNetwork.Context context) {
         context.enqueueWork(() -> AmethystWhipHitEffects.spawnBurst(
                 payload.x(), payload.y(), payload.z(),
                 payload.dx(), payload.dy(), payload.dz(), payload.magicMirror(), payload.seed()));
     }
 
     public static void handleShockwave(AmethystWhipNetwork.WhipShockwavePayload payload,
-                                       IPayloadContext context) {
+                                       WhipNetwork.Context context) {
         context.enqueueWork(() -> {
             ClientLevel level = Minecraft.getInstance().level;
             if (level != null) {

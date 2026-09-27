@@ -3,24 +3,24 @@ package com.betterwhips.client;
 import com.betterwhips.network.RoyalSlimeWhipNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraftforge.network.handling.IPayloadContext;
+import com.betterwhips.network.WhipNetwork;
 
 public final class RoyalSlimeWhipClientNetwork {
     private RoyalSlimeWhipClientNetwork() {}
 
     public static void handleAttackSpeedStacks(RoyalSlimeWhipNetwork.AttackSpeedStacksPayload payload,
-                                               IPayloadContext context) {
+                                               WhipNetwork.Context context) {
         context.enqueueWork(() -> RoyalSlimeWhipHudOverlay.setStacks(payload.stacks()));
     }
 
     public static void handleHitGlowBurst(RoyalSlimeWhipNetwork.HitGlowBurstPayload payload,
-                                          IPayloadContext context) {
+                                          WhipNetwork.Context context) {
         context.enqueueWork(() -> RoyalSlimeWhipHitEffects.spawnBurst(
                 payload.x(), payload.y(), payload.z(), payload.seed()));
     }
 
     public static void handleShockwave(RoyalSlimeWhipNetwork.WhipShockwavePayload payload,
-                                       IPayloadContext context) {
+                                       WhipNetwork.Context context) {
         context.enqueueWork(() -> {
             ClientLevel level = Minecraft.getInstance().level;
             if (level != null) {

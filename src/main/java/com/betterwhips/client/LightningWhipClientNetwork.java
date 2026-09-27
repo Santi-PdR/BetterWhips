@@ -5,28 +5,28 @@ import com.betterwhips.client.WhipShockwaveEffects;
 import com.betterwhips.network.LightningWhipNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraftforge.network.handling.IPayloadContext;
+import com.betterwhips.network.WhipNetwork;
 
 public final class LightningWhipClientNetwork {
     private LightningWhipClientNetwork() {
     }
 
-    public static void handleAttackSpeedStacks(LightningWhipNetwork.AttackSpeedStacksPayload payload, IPayloadContext context) {
+    public static void handleAttackSpeedStacks(LightningWhipNetwork.AttackSpeedStacksPayload payload, WhipNetwork.Context context) {
     }
 
-    public static void handleHitGlowBurst(LightningWhipNetwork.HitGlowBurstPayload payload, IPayloadContext context) {
+    public static void handleHitGlowBurst(LightningWhipNetwork.HitGlowBurstPayload payload, WhipNetwork.Context context) {
         context.enqueueWork(() -> LightningWhipHitEffects.spawnBurst(payload.x(), payload.y(), payload.z(), payload.seed()));
     }
 
-    public static void handleChainHit(LightningWhipNetwork.ChainHitPayload payload, IPayloadContext context) {
+    public static void handleChainHit(LightningWhipNetwork.ChainHitPayload payload, WhipNetwork.Context context) {
         context.enqueueWork(() -> LightningWhipHitEffects.spawnChain(payload));
     }
 
-    public static void handleDirectWrap(LightningWhipNetwork.DirectWrapPayload payload, IPayloadContext context) {
+    public static void handleDirectWrap(LightningWhipNetwork.DirectWrapPayload payload, WhipNetwork.Context context) {
         context.enqueueWork(() -> LightningWhipHitEffects.spawnDirectWrap(payload));
     }
 
-    public static void handleShockwave(LightningWhipNetwork.WhipShockwavePayload payload, IPayloadContext context) {
+    public static void handleShockwave(LightningWhipNetwork.WhipShockwavePayload payload, WhipNetwork.Context context) {
         context.enqueueWork(() -> {
             ClientLevel level = Minecraft.getInstance().level;
             if (level != null) {
