@@ -159,6 +159,7 @@ public final class RoyalSlimeWhipItem extends Item {
         }
     }
 
+    @net.minecraftforge.api.distmarker.OnlyIn(net.minecraftforge.api.distmarker.Dist.CLIENT)
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         Minecraft minecraft = Minecraft.getInstance();
         BlockEntityWithoutLevelRenderer renderer = new RoyalSlimeWhipItemRenderer(
