@@ -30,6 +30,10 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.common.MinecraftForge;
 
 public final class BetterWhipsClient {
+    public static void init() {
+        new BetterWhipsClient(net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext.get().getModEventBus());
+    }
+
     public BetterWhipsClient(IEventBus modBus) {
         modBus.addListener(RoyalSlimeWhipHudOverlay::registerShaders);
         modBus.addListener(LightningWhipVfx::registerShaders);

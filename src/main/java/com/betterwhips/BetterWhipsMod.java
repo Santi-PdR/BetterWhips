@@ -47,14 +47,9 @@ import net.minecraftforge.fml.DistExecutor;
 public final class BetterWhipsMod {
     public static final String MOD_ID = "better_whips";
 
-    private static void initClient() {
-        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
-        new BetterWhipsClient(modBus);
-    }
-
     public BetterWhipsMod() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> BetterWhipsMod::initClient);
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> BetterWhipsClient::init);
         ModItems.ITEMS.register(modBus);
         ModEffects.MOB_EFFECTS.register(modBus);
         ModSounds.SOUND_EVENTS.register(modBus);
