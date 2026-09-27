@@ -87,6 +87,7 @@ public final class WindwhispererWhipItem extends Item {
                 .withStyle(ChatFormatting.DARK_GRAY));
     }
 
+    @net.minecraftforge.api.distmarker.OnlyIn(net.minecraftforge.api.distmarker.Dist.CLIENT)
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         Minecraft minecraft = Minecraft.getInstance();
