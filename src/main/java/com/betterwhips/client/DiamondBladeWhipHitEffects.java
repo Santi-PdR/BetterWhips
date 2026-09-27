@@ -715,7 +715,7 @@ public final class DiamondBladeWhipHitEffects {
             int b,
             int a
     ) {
-        vertices.vertex(pose, (float) position.x, (float) position.y, (float) position.z)
+        vertices.vertex(pose.pose(), (float) position.x, (float) position.y, (float) position.z)
                 .uv(u, v)
                 .color(r, g, b, Mth.clamp(a, 0, 255));
                     vertices.endVertex();

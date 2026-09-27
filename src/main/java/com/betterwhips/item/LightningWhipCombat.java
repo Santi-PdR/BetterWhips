@@ -808,7 +808,7 @@ public final class LightningWhipCombat {
         AttackSpeedStackState state = ATTACK_SPEED_STACKS.computeIfAbsent(player.getUUID(), ignored -> new AttackSpeedStackState());
         state.stacks = Math.min(5, state.stacks + 1);
         state.ticksRemaining = 20 * state.stacks;
-        attackSpeed.addOrUpdateTransientModifier(new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(WHIP_ATTACK_SPEED_STACK_ID), "better_whips modifier", 0.1 * (double)state.stacks, AttributeModifier.Operation.MULTIPLY_TOTAL));
+        com.betterwhips.util.WhipAttributeIds.addOrUpdateTransient(attackSpeed, new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(WHIP_ATTACK_SPEED_STACK_ID), "better_whips modifier", 0.1 * (double)state.stacks, AttributeModifier.Operation.MULTIPLY_TOTAL));
         LightningWhipNetwork.sendAttackSpeedStacks(player, state.stacks);
     }
 
