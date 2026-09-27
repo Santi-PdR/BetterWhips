@@ -30,7 +30,6 @@ import com.betterwhips.network.RoyalSlimeWhipNetwork;
 import com.betterwhips.network.TrainerWhipNetwork;
 import com.betterwhips.network.SeaRippleWhipNetwork;
 import com.betterwhips.network.WindwhispererWhipNetwork;
-import com.betterwhips.registry.ModCreativeTabs;
 import com.betterwhips.registry.ModEffects;
 import com.betterwhips.registry.ModItems;
 import com.betterwhips.registry.ModSounds;
@@ -51,7 +50,6 @@ public final class BetterWhipsMod {
         ModItems.ITEMS.register(modBus);
         ModEffects.MOB_EFFECTS.register(modBus);
         ModSounds.SOUND_EVENTS.register(modBus);
-        ModCreativeTabs.CREATIVE_TABS.register(modBus);
         RoyalSlimeWhipNetwork.register();
         LeatherWhipNetwork.register();
         LightningWhipNetwork.register();
