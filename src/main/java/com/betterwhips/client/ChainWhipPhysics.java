@@ -621,7 +621,7 @@ public final class ChainWhipPhysics {
             return false;
         }
         for (var enchantment : net.minecraft.world.item.enchantment.EnchantmentHelper.getEnchantments(stack).keySet()) {
-            if (enchantment.is(Enchantments.FIRE_ASPECT)) {
+            if (enchantment == Enchantments.FIRE_ASPECT) {
                 return true;
             }
         }

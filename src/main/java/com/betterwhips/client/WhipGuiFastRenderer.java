@@ -285,7 +285,7 @@ final class WhipGuiFastRenderer {
                 .uv(u, v)
                 .overlayCoords(overlay)
                 .uv2(LightTexture.FULL_BRIGHT)
-                .normal(pose, 0.0F, 0.0F, 1.0F);
+                .normal(pose.normal(), 0.0F, 0.0F, 1.0F);
                     consumer.endVertex();
     }
 }

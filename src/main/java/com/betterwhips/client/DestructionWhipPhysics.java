@@ -68,7 +68,7 @@ public final class DestructionWhipPhysics {
             BetterWhipsMod.MOD_ID, "textures/misc/vfx_white.png");
     private static final RenderType RENDER_TYPE = RenderType.entityTranslucent(TEXTURE);
     private static final RenderType PULSE_RENDER_TYPE =
-            NeoForgeRenderTypes.getUnlitTranslucent(PULSE_TEXTURE);
+            RenderType.entityTranslucent(PULSE_TEXTURE);
 
     private static final RenderType SPECTRAL_RENDER_TYPE =
             RenderType.entityTranslucent(TEXTURE);
@@ -1349,7 +1349,7 @@ public final class DestructionWhipPhysics {
             return false;
         }
         for (var enchantment : net.minecraft.world.item.enchantment.EnchantmentHelper.getEnchantments(stack).keySet()) {
-            if (enchantment.is(Enchantments.FIRE_ASPECT)) {
+            if (enchantment == Enchantments.FIRE_ASPECT) {
                 return true;
             }
         }

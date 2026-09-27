@@ -1015,7 +1015,7 @@ final class DestructionWhipGeometry {
                         .uv(vertex.u, vertex.v)
                         .overlayCoords(overlay)
                         .uv2(light)
-                        .normal(pose, nx, ny, nz);
+                        .normal(pose.normal(), nx, ny, nz);
                     consumer.endVertex();
             }
         }
@@ -1046,7 +1046,7 @@ final class DestructionWhipGeometry {
                         .uv(0.5F, 0.5F)
                         .overlayCoords(overlay)
                         .uv2(light)
-                        .normal(pose, nx, ny, nz);
+                        .normal(pose.normal(), nx, ny, nz);
                     consumer.endVertex();
             }
         }
@@ -1070,7 +1070,7 @@ final class DestructionWhipGeometry {
                         .uv(0.5F, 0.5F)
                         .overlayCoords(overlay)
                         .uv2(light)
-                        .normal(pose, nx, ny, nz);
+                        .normal(pose.normal(), nx, ny, nz);
                     consumer.endVertex();
             }
         }

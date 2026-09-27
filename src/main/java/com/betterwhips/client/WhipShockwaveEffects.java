@@ -426,7 +426,7 @@ public final class WhipShockwaveEffects {
                 .color(red, green, blue, 255)
                 .uv(u, v)
                 .uv2(light)
-                .normal(pose, direction.getStepX(), direction.getStepY(), direction.getStepZ());
+                .normal(pose.normal(), direction.getStepX(), direction.getStepY(), direction.getStepZ());
                     consumer.endVertex();
     }
 

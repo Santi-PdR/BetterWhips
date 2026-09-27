@@ -27,7 +27,7 @@ final class LightningWhipGeometry {
             for (Vertex v : face.vertices) {
                 consumer.vertex(pose.pose(), v.x, v.y, v.z).color(255, 255, 255, 255)
                     .uv(v.u, v.v).overlayCoords(overlay).uv2(faceLight)
-                    .normal(pose, face.normal.x, face.normal.y, face.normal.z);
+                    .normal(pose.normal(), face.normal.x, face.normal.y, face.normal.z);
                     consumer.endVertex();
             }
         }

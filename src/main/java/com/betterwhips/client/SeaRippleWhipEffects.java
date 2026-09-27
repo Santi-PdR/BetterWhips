@@ -17,7 +17,7 @@ public final class SeaRippleWhipEffects {
     public static void receive(Impact packet) {
         ClientLevel level=Minecraft.getInstance().level;
         if(level==null || !level.dimension().location().equals(packet.dimension()))return;
-        if(BURSTS.size()>=48)BURSTS.removeFirst();
+        if(BURSTS.size()>=48)BURSTS.remove(0);
         BURSTS.add(new Burst(level,level.getGameTime(),packet));
     }
     public static void clear() { BURSTS.clear(); }

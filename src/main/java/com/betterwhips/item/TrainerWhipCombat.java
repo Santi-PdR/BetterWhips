@@ -2223,7 +2223,7 @@ public final class TrainerWhipCombat {
         state.stacks = Math.min(ATTACK_SPEED_MAX_STACKS, state.stacks + 1);
         state.ticksRemaining = ATTACK_SPEED_STACK_DURATION_TICKS * state.stacks;
         attackSpeed.addOrUpdateTransientModifier(new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(WHIP_ATTACK_SPEED_STACK_ID),
-                ATTACK_SPEED_PER_STACK * state.stacks,
+                "better_whips modifier", ATTACK_SPEED_PER_STACK * state.stacks,
                 AttributeModifier.Operation.MULTIPLY_TOTAL));
         com.betterwhips.network.TrainerWhipNetwork.sendAttackSpeedStacks(player, state.stacks);
     }
@@ -2263,12 +2263,12 @@ public final class TrainerWhipCombat {
         float oldMax = pet.getMaxHealth();
         AttributeInstance attackDamage = pet.getAttribute(Attributes.ATTACK_DAMAGE);
         if (attackDamage != null) {
-            attackDamage.addOrUpdateTransientModifier(new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(PET_MASTER_DAMAGE_ID), PET_MASTER_MULTIPLIER,
+            attackDamage.addOrUpdateTransientModifier(new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(PET_MASTER_DAMAGE_ID), "better_whips modifier", PET_MASTER_MULTIPLIER,
                     AttributeModifier.Operation.MULTIPLY_TOTAL));
         }
         AttributeInstance maxHealth = pet.getAttribute(Attributes.MAX_HEALTH);
         if (maxHealth != null) {
-            maxHealth.addOrUpdateTransientModifier(new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(PET_MASTER_HEALTH_ID), PET_MASTER_MULTIPLIER,
+            maxHealth.addOrUpdateTransientModifier(new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(PET_MASTER_HEALTH_ID), "better_whips modifier", PET_MASTER_MULTIPLIER,
                     AttributeModifier.Operation.MULTIPLY_TOTAL));
             float gained = Math.max(0.0F, pet.getMaxHealth() - oldMax);
             if (gained > 0.0F) {

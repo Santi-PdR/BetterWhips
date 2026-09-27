@@ -430,7 +430,7 @@ final class GoldenHeavyWhipGeometry {
                         .uv(vertex.u, vertex.v)
                         .overlayCoords(overlay)
                         .uv2(light)
-                        .normal(pose, nx, ny, nz);
+                        .normal(pose.normal(), nx, ny, nz);
                     consumer.endVertex();
             }
         }

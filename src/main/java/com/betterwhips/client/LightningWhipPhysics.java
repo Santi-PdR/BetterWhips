@@ -504,8 +504,8 @@ public final class LightningWhipPhysics {
         if (stack == null || stack.isEmpty()) {
             return false;
         }
-        for (Holder<Enchantment> enchantment : net.minecraft.world.item.enchantment.EnchantmentHelper.getEnchantments(stack).keySet()) {
-            if (!enchantment.is(Enchantments.FIRE_ASPECT)) continue;
+        for (Enchantment enchantment : net.minecraft.world.item.enchantment.EnchantmentHelper.getEnchantments(stack).keySet()) {
+            if (enchantment != Enchantments.FIRE_ASPECT) continue;
             return true;
         }
         return false;
