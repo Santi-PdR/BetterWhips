@@ -87,10 +87,6 @@ public final class ChainWhipItem extends Item {
     }
 
     @Override
-    public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, Level level,
                                 List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("tooltip.better_whips.chain_whip.left")

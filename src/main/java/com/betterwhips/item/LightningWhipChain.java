@@ -56,7 +56,7 @@ public final class LightningWhipChain {
             routeEntityIds[i] = endpoint.getId();
         }
 
-        if (ACTIVE.size() >= MAX_ACTIVE_CHAINS) ACTIVE.removeFirst();
+        if (ACTIVE.size() >= MAX_ACTIVE_CHAINS) ACTIVE.remove(0);
         ACTIVE.add(new ActiveChain(level, owner.getUUID(), level.getGameTime(),
                 routeEntityIds, arcDamage, 1));
         LightningWhipNetwork.sendArcRoute(level, route, seed);

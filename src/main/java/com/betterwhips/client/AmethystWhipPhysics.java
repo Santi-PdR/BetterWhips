@@ -364,7 +364,7 @@ public final class AmethystWhipPhysics {
             return;
         }
 
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partialTick = event.getPartialTick();
         Vec3 camera = event.getCamera().getPosition();
         PoseStack poseStack = event.getPoseStack();
         MultiBufferSource.BufferSource buffers = minecraft.renderBuffers().bufferSource();
@@ -440,7 +440,7 @@ public final class AmethystWhipPhysics {
         if (!holdsWhip(player, arm)) {
             return;
         }
-        float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
+        float partialTick = Minecraft.getInstance().getFrameTime();
         ArmPose armPose = getArmPose(player, arm, partialTick);
         float side = arm == HumanoidArm.RIGHT ? 1.0F : -1.0F;
         float pitchDelta = armPose.pitch - ARM_REST_PITCH;
@@ -597,7 +597,7 @@ public final class AmethystWhipPhysics {
         if (!isAttachedLocalFirstPerson(minecraft, player, camera)) {
             return;
         }
-        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+        float partialTick = minecraft.getFrameTime();
 
         if (state.coilProgress >= 0.999F) {
             if (spectral) {
@@ -696,7 +696,7 @@ public final class AmethystWhipPhysics {
         if (!isAttachedLocalFirstPerson(minecraft, player, camera)) {
             return;
         }
-        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+        float partialTick = minecraft.getFrameTime();
         Matrix4f inverseHand = new Matrix4f(poseStack.last().pose());
         float determinant = inverseHand.determinant();
         if (!Float.isFinite(determinant) || Math.abs(determinant) < 1.0E-8F) {
@@ -764,7 +764,7 @@ public final class AmethystWhipPhysics {
         if (!isAttachedLocalFirstPerson(minecraft, player, camera)) {
             return;
         }
-        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+        float partialTick = minecraft.getFrameTime();
         long gameTime = player.level().getGameTime();
         Matrix4f inverseHand = new Matrix4f(poseStack.last().pose());
         float determinant = inverseHand.determinant();
@@ -1092,7 +1092,7 @@ public final class AmethystWhipPhysics {
         if (stack == null || stack.isEmpty()) {
             return false;
         }
-        for (var enchantment : stack.getEnchantments().keySet()) {
+        for (var enchantment : net.minecraft.world.item.enchantment.EnchantmentHelper.getEnchantments(stack).keySet()) {
             if (enchantment.is(Enchantments.FIRE_ASPECT)) {
                 return true;
             }

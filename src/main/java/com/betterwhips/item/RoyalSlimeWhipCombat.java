@@ -2003,10 +2003,9 @@ public final class RoyalSlimeWhipCombat {
                 player.getUUID(), ignored -> new AttackSpeedStackState());
         state.stacks = Math.min(ATTACK_SPEED_MAX_STACKS, state.stacks + 1);
         state.ticksRemaining = ATTACK_SPEED_STACK_DURATION_TICKS * state.stacks;
-        attackSpeed.addOrUpdateTransientModifier(new AttributeModifier(
-                WHIP_ATTACK_SPEED_STACK_ID,
+        attackSpeed.addOrUpdateTransientModifier(new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(WHIP_ATTACK_SPEED_STACK_ID),
                 ATTACK_SPEED_PER_STACK * state.stacks,
-                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+                AttributeModifier.Operation.MULTIPLY_TOTAL));
         com.betterwhips.network.RoyalSlimeWhipNetwork.sendAttackSpeedStacks(player, state.stacks);
     }
 
@@ -2025,7 +2024,7 @@ public final class RoyalSlimeWhipCombat {
             if (!player.getMainHandItem().is(ModItems.ROYAL_SLIME_WHIP.get())
                     || --state.ticksRemaining <= 0) {
                 if (attackSpeed != null) {
-                    attackSpeed.removeModifier(WHIP_ATTACK_SPEED_STACK_ID);
+                    attackSpeed.removeModifier(com.betterwhips.util.WhipAttributeIds.uuid(WHIP_ATTACK_SPEED_STACK_ID));
                 }
                 com.betterwhips.network.RoyalSlimeWhipNetwork.sendAttackSpeedStacks(player, 0);
                 iterator.remove();

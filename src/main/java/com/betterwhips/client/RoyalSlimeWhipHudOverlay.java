@@ -17,8 +17,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RegisterShadersEvent;
-import net.minecraftforge.client.event.RenderGuiLayerEvent;
-import net.minecraftforge.client.gui.VanillaGuiLayers;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import org.joml.Matrix4f;
 
 import java.io.IOException;
@@ -81,8 +81,8 @@ public final class RoyalSlimeWhipHudOverlay {
         animationStartNanos = 0L;
     }
 
-    public static void onRenderGuiLayer(RenderGuiLayerEvent.Post event) {
-        if (!VanillaGuiLayers.CROSSHAIR.equals(event.getName())) {
+    public static void onRenderGuiLayer(RenderGuiOverlayEvent.Post event) {
+        if (!VanillaGuiOverlay.CROSSHAIR.type().equals(event.getOverlay())) {
             return;
         }
 

@@ -808,7 +808,7 @@ public final class LightningWhipCombat {
         AttackSpeedStackState state = ATTACK_SPEED_STACKS.computeIfAbsent(player.getUUID(), ignored -> new AttackSpeedStackState());
         state.stacks = Math.min(5, state.stacks + 1);
         state.ticksRemaining = 20 * state.stacks;
-        attackSpeed.addOrUpdateTransientModifier(new AttributeModifier(WHIP_ATTACK_SPEED_STACK_ID, 0.1 * (double)state.stacks, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+        attackSpeed.addOrUpdateTransientModifier(new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(WHIP_ATTACK_SPEED_STACK_ID), 0.1 * (double)state.stacks, AttributeModifier.Operation.MULTIPLY_TOTAL));
         LightningWhipNetwork.sendAttackSpeedStacks(player, state.stacks);
     }
 
@@ -825,7 +825,7 @@ public final class LightningWhipCombat {
             AttackSpeedStackState state = entry.getValue();
             if (player.getMainHandItem().is((Item)ModItems.LIGHTNING_WHIP.get()) && --state.ticksRemaining > 0) continue;
             if (attackSpeed != null) {
-                attackSpeed.removeModifier(WHIP_ATTACK_SPEED_STACK_ID);
+                attackSpeed.removeModifier(com.betterwhips.util.WhipAttributeIds.uuid(WHIP_ATTACK_SPEED_STACK_ID));
             }
             LightningWhipNetwork.sendAttackSpeedStacks(player, 0);
             iterator.remove();

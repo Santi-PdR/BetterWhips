@@ -90,10 +90,6 @@ extends Item {
     }
 
     @Override
-    public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("tooltip.better_whips.lightning_whip.left").withStyle(ChatFormatting.GOLD));
         tooltipComponents.add(Component.translatable("tooltip.better_whips.lightning_whip.damage").withStyle(ChatFormatting.WHITE));

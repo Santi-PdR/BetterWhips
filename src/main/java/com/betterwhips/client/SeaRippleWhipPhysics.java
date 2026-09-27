@@ -101,7 +101,7 @@ public final class SeaRippleWhipPhysics {
         if(!localFirstPerson(p,camera))return;
 
         Stroke stroke=SeaRippleWhipClientState.stroke(p,context.arm);
-        float partial=Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
+        float partial=Minecraft.getInstance().getFrameTime();
         double age=SeaRippleWhipClientState.age(p,stroke,partial);
         double authority=SeaRippleWhipMotion.attackVisualAuthority(stroke,age);
         if(authority<=1.0E-5D || stroke.kind()==SeaRippleWhipMotion.IDLE)return;
@@ -295,13 +295,13 @@ public final class SeaRippleWhipPhysics {
         if(!(context.holder instanceof Player p) || !(p.level() instanceof ClientLevel level) || !context.firstPerson)return;
         Camera camera=Minecraft.getInstance().gameRenderer.getMainCamera();if(!localFirstPerson(p,camera))return;
         UnaryOperator<Vec3> space=handSpace(pose,camera);if(space==null)return;
-        segments(pose,out,frame(p,context.arm,Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)),space,level,overlay,true);
+        segments(pose,out,frame(p,context.arm,Minecraft.getInstance().getFrameTime()),space,level,overlay,true);
     }
     static void renderFirstPersonWater(PoseStack pose,RenderContext context,MultiBufferSource buffers) {
         if(!SeaRippleWhipVfx.ready() || !(context.holder instanceof Player p) || !context.firstPerson)return;
         Camera camera=Minecraft.getInstance().gameRenderer.getMainCamera();if(!localFirstPerson(p,camera))return;
         UnaryOperator<Vec3> space=handSpace(pose,camera);if(space==null)return;
-        Frame frame=frame(p,context.arm,Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
+        Frame frame=frame(p,context.arm,Minecraft.getInstance().getFrameTime());
         for(RenderType type:new RenderType[]{SeaRippleWhipVfx.WATER,SeaRippleWhipVfx.GLOW}) {
             water(pose,buffers.getBuffer(type),frame,space,SeaRippleWhipClientState.empoweredRemaining(p)>0);
             if(buffers instanceof MultiBufferSource.BufferSource source)source.endBatch(type);
@@ -322,7 +322,7 @@ public final class SeaRippleWhipPhysics {
         boolean model=event.getStage()==RenderLevelStageEvent.Stage.AFTER_ENTITIES;
         if(!model && event.getStage()!=RenderLevelStageEvent.Stage.AFTER_PARTICLES || ShaderCompat.isIrisShadowPass())return;
         Minecraft mc=Minecraft.getInstance();if(mc.level==null || !model && !SeaRippleWhipVfx.ready())return;
-        float partial=event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partial=event.getPartialTick();
         MultiBufferSource.BufferSource buffers=mc.renderBuffers().bufferSource();PoseStack pose=event.getPoseStack();
         UnaryOperator<Vec3> space=p->p.subtract(event.getCamera().getPosition());
         RenderType[] types=model?new RenderType[]{MODEL}:new RenderType[]{SeaRippleWhipVfx.WATER,SeaRippleWhipVfx.GLOW};
@@ -345,7 +345,7 @@ public final class SeaRippleWhipPhysics {
     }
     public static void onRenderArm(RenderArmEvent event) {
         Player p=event.getPlayer();if(!holds(p,event.getArm()))return;
-        ArmPose arm=getArmPose(p,event.getArm(),Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
+        ArmPose arm=getArmPose(p,event.getArm(),Minecraft.getInstance().getFrameTime());
         PoseStack pose=event.getPoseStack();float side=event.getArm()==HumanoidArm.RIGHT?1:-1;
         WhipFirstPersonFov.applyToViewModel(pose);pose.translate(side*.025,-.035,0);
         pose.mulPose(Axis.ZP.rotation(arm.roll*.50f));pose.mulPose(Axis.YP.rotation(arm.yaw*.45f));pose.mulPose(Axis.XP.rotation((arm.pitch+.38f)*.55f));

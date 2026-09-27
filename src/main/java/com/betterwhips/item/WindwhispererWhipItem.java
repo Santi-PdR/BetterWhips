@@ -68,7 +68,6 @@ public final class WindwhispererWhipItem extends Item {
     }
 
     @Override public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) { return true; }
-    @Override public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {}
 
     @Override
     public void appendHoverText(ItemStack stack, Level level,

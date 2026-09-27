@@ -1,5 +1,7 @@
 package com.betterwhips;
 
+import com.betterwhips.client.BetterWhipsClient;
+
 import com.betterwhips.command.WhipCommands;
 import com.betterwhips.item.AmethystWhipCombat;
 import com.betterwhips.item.ChainWhipCombat;
@@ -38,6 +40,8 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 
 @Mod(value="better_whips")
 public final class BetterWhipsMod {
@@ -45,6 +49,7 @@ public final class BetterWhipsMod {
 
     public BetterWhipsMod() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> new BetterWhipsClient(modBus));
         ModItems.ITEMS.register(modBus);
         ModEffects.MOB_EFFECTS.register(modBus);
         ModSounds.SOUND_EVENTS.register(modBus);

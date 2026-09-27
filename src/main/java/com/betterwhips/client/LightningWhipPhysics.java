@@ -298,7 +298,7 @@ public final class LightningWhipPhysics {
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         if (level == null || STATES.isEmpty()) return;
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partialTick = event.getPartialTick();
         Vec3 camera = event.getCamera().getPosition();
         MultiBufferSource.BufferSource buffers = minecraft.renderBuffers().bufferSource();
         VertexConsumer consumer = buffers.getBuffer(RENDER_TYPE);
@@ -320,7 +320,7 @@ public final class LightningWhipPhysics {
         if (!LightningWhipPhysics.holdsWhip(player, arm = event.getArm())) {
             return;
         }
-        float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
+        float partialTick = Minecraft.getInstance().getFrameTime();
         ArmPose armPose = LightningWhipPhysics.getArmPose(player, arm, partialTick);
         float side = arm == HumanoidArm.RIGHT ? 1.0f : -1.0f;
         float pitchDelta = armPose.pitch - -0.38f;
@@ -414,7 +414,7 @@ public final class LightningWhipPhysics {
         Minecraft minecraft = Minecraft.getInstance();
         Camera camera = minecraft.gameRenderer.getMainCamera();
         if (!isAttachedLocalFirstPerson(minecraft, player, camera)) return;
-        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+        float partialTick = minecraft.getFrameTime();
         Matrix4f inverse = new Matrix4f(poseStack.last().pose());
         float determinant = inverse.determinant();
         if (!Float.isFinite(determinant) || Math.abs(determinant) < 1.0e-8f) return;
@@ -504,7 +504,7 @@ public final class LightningWhipPhysics {
         if (stack == null || stack.isEmpty()) {
             return false;
         }
-        for (Holder<Enchantment> enchantment : stack.getEnchantments().keySet()) {
+        for (Holder<Enchantment> enchantment : net.minecraft.world.item.enchantment.EnchantmentHelper.getEnchantments(stack).keySet()) {
             if (!enchantment.is(Enchantments.FIRE_ASPECT)) continue;
             return true;
         }

@@ -25,12 +25,10 @@ import com.betterwhips.client.SeaRippleWhipPhysics;
 import com.betterwhips.client.TrainerWhipPhysics;
 import com.betterwhips.client.WhipShockwaveEffects;
 import com.betterwhips.client.WindwhispererWhipPhysics;
-import net.neoforged.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
 import net.minecraftforge.common.MinecraftForge;
 
-@Mod(value="better_whips", dist={Dist.CLIENT})
 public final class BetterWhipsClient {
     public BetterWhipsClient(IEventBus modBus) {
         modBus.addListener(RoyalSlimeWhipHudOverlay::registerShaders);

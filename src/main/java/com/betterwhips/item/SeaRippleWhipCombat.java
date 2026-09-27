@@ -75,7 +75,7 @@ public final class SeaRippleWhipCombat {
             s.bladeReady=tick+BLADE_COOLDOWN;
             s.stroke=new Stroke(SeaRippleWhipMotion.BLADE,tick,9,player.position(),player.getLookAngle(),side(player),true);
             s.tailHits.clear();s.nextAttack=Math.max(s.nextAttack,tick+9);
-            level.playSound(null,player.blockPosition(),SoundEvents.TRIDENT_THROW.value(),SoundSource.PLAYERS,.8f,1.35f);
+            level.playSound(null,player.blockPosition(),SoundEvents.TRIDENT_THROW,SoundSource.PLAYERS,.8f,1.35f);
         }
         sync(player,s,tick);
     }
@@ -108,8 +108,8 @@ public final class SeaRippleWhipCombat {
     private static void boost(Player p,boolean active) {
         var attribute=p.getAttribute(Attributes.ATTACK_SPEED);if(attribute==null)return;
         if(active && !attribute.hasModifier(ATTACK_BOOST))attribute.addTransientModifier(
-            new AttributeModifier(ATTACK_BOOST,WATER_ATTACK_SPEED_BONUS,AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-        else if(!active)attribute.removeModifier(ATTACK_BOOST);
+            new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(ATTACK_BOOST),WATER_ATTACK_SPEED_BONUS,AttributeModifier.Operation.MULTIPLY_TOTAL));
+        else if(!active)attribute.removeModifier(com.betterwhips.util.WhipAttributeIds.uuid(ATTACK_BOOST));
     }
     private static void tickStroke(ServerPlayer p,State s,long tick) {
         Stroke stroke=s.stroke;double age=tick-stroke.startTick();

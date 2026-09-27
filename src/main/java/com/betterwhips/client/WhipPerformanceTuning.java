@@ -221,7 +221,7 @@ public final class WhipPerformanceTuning {
     private static void refreshFrameBudget() {
         Minecraft minecraft = Minecraft.getInstance();
         long gameTime = minecraft.level == null ? 0L : minecraft.level.getGameTime();
-        float partial = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+        float partial = minecraft.getFrameTime();
         long key = (gameTime << 32) ^ (Float.floatToRawIntBits(partial) & 0xffffffffL);
         if (key == frameKey) {
             return;

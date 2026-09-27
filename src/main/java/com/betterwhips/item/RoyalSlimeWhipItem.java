@@ -98,10 +98,6 @@ public final class RoyalSlimeWhipItem extends Item {
     }
 
     @Override
-    public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, Level level,
                                 List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable(
@@ -131,7 +127,7 @@ public final class RoyalSlimeWhipItem extends Item {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+    public int getUseDuration(ItemStack stack) {
         return RIGHT_MAX_USE_TICKS;
     }
 

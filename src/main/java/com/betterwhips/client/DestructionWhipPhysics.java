@@ -458,7 +458,7 @@ public final class DestructionWhipPhysics {
             return;
         }
 
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partialTick = event.getPartialTick();
         Vec3 camera = event.getCamera().getPosition();
         PoseStack poseStack = event.getPoseStack();
         MultiBufferSource.BufferSource buffers = minecraft.renderBuffers().bufferSource();
@@ -616,7 +616,7 @@ public final class DestructionWhipPhysics {
 
     static int currentPulseFrame(RenderContext context) {
         Minecraft minecraft = Minecraft.getInstance();
-        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+        float partialTick = minecraft.getFrameTime();
         long gameTime = 0L;
         if (context != null && context.holder != null) {
             gameTime = context.holder.level().getGameTime();
@@ -766,7 +766,7 @@ public final class DestructionWhipPhysics {
         if (!isAttachedLocalFirstPerson(minecraft, player, camera)) {
             return;
         }
-        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+        float partialTick = minecraft.getFrameTime();
 
         if (state.coilProgress >= 0.999F) {
             if (spectral) {
@@ -868,7 +868,7 @@ public final class DestructionWhipPhysics {
         if (!isAttachedLocalFirstPerson(minecraft, player, camera)) {
             return;
         }
-        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+        float partialTick = minecraft.getFrameTime();
 
         if (state.coilProgress >= 0.999F) {
             if (spectralScale) {
@@ -992,7 +992,7 @@ public final class DestructionWhipPhysics {
         if (!isAttachedLocalFirstPerson(minecraft, player, camera)) {
             return;
         }
-        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+        float partialTick = minecraft.getFrameTime();
         Matrix4f inverseHand = new Matrix4f(poseStack.last().pose());
         float determinant = inverseHand.determinant();
         if (!Float.isFinite(determinant) || Math.abs(determinant) < 1.0E-8F) {
@@ -1044,7 +1044,7 @@ public final class DestructionWhipPhysics {
         if (!isAttachedLocalFirstPerson(minecraft, player, camera)) {
             return;
         }
-        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+        float partialTick = minecraft.getFrameTime();
         long gameTime = player.level().getGameTime();
         Matrix4f inverseHand = new Matrix4f(poseStack.last().pose());
         float determinant = inverseHand.determinant();
@@ -1360,7 +1360,7 @@ public final class DestructionWhipPhysics {
         if (stack == null || stack.isEmpty()) {
             return false;
         }
-        for (var enchantment : stack.getEnchantments().keySet()) {
+        for (var enchantment : net.minecraft.world.item.enchantment.EnchantmentHelper.getEnchantments(stack).keySet()) {
             if (enchantment.is(Enchantments.FIRE_ASPECT)) {
                 return true;
             }

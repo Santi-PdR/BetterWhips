@@ -30,7 +30,7 @@ public final class SeaRippleWhipEffects {
         if(event.getStage()!=RenderLevelStageEvent.Stage.AFTER_PARTICLES || ShaderCompat.isIrisShadowPass()
                 || !SeaRippleWhipVfx.ready() || BURSTS.isEmpty())return;
         Minecraft mc=Minecraft.getInstance();if(mc.level==null)return;
-        var buffers=mc.renderBuffers().bufferSource();float partial=event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        var buffers=mc.renderBuffers().bufferSource();float partial=event.getPartialTick();
         for(RenderType type:new RenderType[]{SeaRippleWhipVfx.WATER,SeaRippleWhipVfx.GLOW}) {
             VertexConsumer out=buffers.getBuffer(type);
             for(Burst burst:BURSTS) {

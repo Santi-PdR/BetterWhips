@@ -2222,10 +2222,9 @@ public final class TrainerWhipCombat {
                 player.getUUID(), ignored -> new AttackSpeedStackState());
         state.stacks = Math.min(ATTACK_SPEED_MAX_STACKS, state.stacks + 1);
         state.ticksRemaining = ATTACK_SPEED_STACK_DURATION_TICKS * state.stacks;
-        attackSpeed.addOrUpdateTransientModifier(new AttributeModifier(
-                WHIP_ATTACK_SPEED_STACK_ID,
+        attackSpeed.addOrUpdateTransientModifier(new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(WHIP_ATTACK_SPEED_STACK_ID),
                 ATTACK_SPEED_PER_STACK * state.stacks,
-                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+                AttributeModifier.Operation.MULTIPLY_TOTAL));
         com.betterwhips.network.TrainerWhipNetwork.sendAttackSpeedStacks(player, state.stacks);
     }
 
@@ -2244,7 +2243,7 @@ public final class TrainerWhipCombat {
             if (!player.getMainHandItem().is(ModItems.TRAINER_WHIP.get())
                     || --state.ticksRemaining <= 0) {
                 if (attackSpeed != null) {
-                    attackSpeed.removeModifier(WHIP_ATTACK_SPEED_STACK_ID);
+                    attackSpeed.removeModifier(com.betterwhips.util.WhipAttributeIds.uuid(WHIP_ATTACK_SPEED_STACK_ID));
                 }
                 com.betterwhips.network.TrainerWhipNetwork.sendAttackSpeedStacks(player, 0);
                 iterator.remove();
@@ -2264,15 +2263,13 @@ public final class TrainerWhipCombat {
         float oldMax = pet.getMaxHealth();
         AttributeInstance attackDamage = pet.getAttribute(Attributes.ATTACK_DAMAGE);
         if (attackDamage != null) {
-            attackDamage.addOrUpdateTransientModifier(new AttributeModifier(
-                    PET_MASTER_DAMAGE_ID, PET_MASTER_MULTIPLIER,
-                    AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            attackDamage.addOrUpdateTransientModifier(new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(PET_MASTER_DAMAGE_ID), PET_MASTER_MULTIPLIER,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL));
         }
         AttributeInstance maxHealth = pet.getAttribute(Attributes.MAX_HEALTH);
         if (maxHealth != null) {
-            maxHealth.addOrUpdateTransientModifier(new AttributeModifier(
-                    PET_MASTER_HEALTH_ID, PET_MASTER_MULTIPLIER,
-                    AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            maxHealth.addOrUpdateTransientModifier(new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(PET_MASTER_HEALTH_ID), PET_MASTER_MULTIPLIER,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL));
             float gained = Math.max(0.0F, pet.getMaxHealth() - oldMax);
             if (gained > 0.0F) {
                 pet.heal(gained);
@@ -2296,11 +2293,11 @@ public final class TrainerWhipCombat {
                 if (raw instanceof LivingEntity pet) {
                     AttributeInstance attackDamage = pet.getAttribute(Attributes.ATTACK_DAMAGE);
                     if (attackDamage != null) {
-                        attackDamage.removeModifier(PET_MASTER_DAMAGE_ID);
+                        attackDamage.removeModifier(com.betterwhips.util.WhipAttributeIds.uuid(PET_MASTER_DAMAGE_ID));
                     }
                     AttributeInstance maxHealth = pet.getAttribute(Attributes.MAX_HEALTH);
                     if (maxHealth != null) {
-                        maxHealth.removeModifier(PET_MASTER_HEALTH_ID);
+                        maxHealth.removeModifier(com.betterwhips.util.WhipAttributeIds.uuid(PET_MASTER_HEALTH_ID));
                         if (pet.getHealth() > pet.getMaxHealth()) {
                             pet.setHealth(pet.getMaxHealth());
                         }

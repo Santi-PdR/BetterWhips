@@ -44,10 +44,8 @@ public final class LightningWhipTimeStop {
         }
     }
 
-    public static void onEntityTickPre(TickEvent.EntityTickEvent event) {
-        if (event.phase != TickEvent.Phase.START) return;
-        if (event.phase != TickEvent.Phase.START) return;
-        Entity entity = event.getEntity();
+    public static void onEntityTickPre(net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent event) {
+                        Entity entity = event.getEntity();
         if (!(entity instanceof LivingEntity) || entity.isRemoved()) return;
         Level level = entity.level();
         FreezeKey key = new FreezeKey(level.dimension(), level.isClientSide, entity.getUUID());

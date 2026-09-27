@@ -94,7 +94,7 @@ public final class DiamondBladeWhipHitEffects {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             return;
         }
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partialTick = event.getPartialTick();
         render(event.getPoseStack(), event.getCamera().getPosition(), partialTick);
     }
 

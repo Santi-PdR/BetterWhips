@@ -90,7 +90,7 @@ public final class WhipShockwaveEffects {
             return;
         }
 
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partialTick = event.getPartialTick();
         long gameTime = level.getGameTime();
         Camera camera = event.getCamera();
         Vec3 cameraPos = camera.getPosition();

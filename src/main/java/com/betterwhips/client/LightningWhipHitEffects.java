@@ -38,7 +38,7 @@ public final class LightningWhipHitEffects {
     public static void spawnChain(ChainHitPayload payload) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) return;
-        if (ACTIVE.size() >= MAX_ACTIVE) ACTIVE.removeFirst();
+        if (ACTIVE.size() >= MAX_ACTIVE) ACTIVE.remove(0);
         TargetTrack[] targets = payload.targets().stream().map(TargetTrack::new).toArray(TargetTrack[]::new);
         long spawnTick = level.getGameTime();
 
@@ -48,7 +48,7 @@ public final class LightningWhipHitEffects {
     public static void spawnDirectWrap(DirectWrapPayload payload) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) return;
-        if (ACTIVE.size() >= MAX_ACTIVE) ACTIVE.removeFirst();
+        if (ACTIVE.size() >= MAX_ACTIVE) ACTIVE.remove(0);
         long spawnTick = level.getGameTime();
         ACTIVE.add(new ChainEffect(level, spawnTick, payload.seed(),
                 new TargetTrack[]{new TargetTrack(payload.target())}, true));
@@ -58,7 +58,7 @@ public final class LightningWhipHitEffects {
     public static void spawnBurst(double x,double y,double z,long seed) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) return;
-        if (IMPACTS.size() >= MAX_IMPACTS) IMPACTS.removeFirst();
+        if (IMPACTS.size() >= MAX_IMPACTS) IMPACTS.remove(0);
         IMPACTS.add(new ImpactEffect(level, level.getGameTime(), seed, new Vec3(x,y,z)));
     }
     private static float arrival(int index) {
@@ -80,7 +80,7 @@ public final class LightningWhipHitEffects {
     public static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) { clear(); }
     public static void onRenderLevel(RenderLevelStageEvent event) {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || ShaderCompat.isIrisShadowPass()) return;
-        render(event.getPoseStack(),event.getCamera().getPosition(),event.getPartialTick().getGameTimeDeltaPartialTick(false));
+        render(event.getPoseStack(),event.getCamera().getPosition(),event.getPartialTick());
     }
 
     public static void render(PoseStack pose,Vec3 camera,float partialTick) {
