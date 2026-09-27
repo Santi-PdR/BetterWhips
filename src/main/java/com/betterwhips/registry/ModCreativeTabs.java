@@ -1,15 +1,15 @@
 package com.betterwhips.registry;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public final class ModCreativeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS =
-            DeferredRegister.create(ForgeRegistries.Keys.CREATIVE_MODE_TABS, "better_whips");
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, "better_whips");
 
     public static final RegistryObject<CreativeModeTab> MAIN = CREATIVE_TABS.register("main",
             () -> CreativeModeTab.builder()
