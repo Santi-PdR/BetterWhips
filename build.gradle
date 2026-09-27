@@ -97,7 +97,3 @@ publishing {
     }
 }
 
-// Temporarily surface the complete porting error set in CI.
-tasks.withType(JavaCompile).configureEach {
-    options.compilerArgs += ['-Xmaxerrs', '1000']
-}

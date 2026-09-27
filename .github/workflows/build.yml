@@ -20,6 +20,31 @@ jobs:
           gradle-version: "8.8"
       - name: Build mod
         run: gradle --no-daemon build
+      - name: Smoke test dedicated server startup
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p run
+          printf 'eula=true\n' > run/eula.txt
+          log_file="$(mktemp)"
+          setsid gradle --no-daemon runServer >"$log_file" 2>&1 &
+          server_pid=$!
+          for attempt in $(seq 1 150); do
+            if grep -q 'Done (' "$log_file"; then
+              tail -n 80 "$log_file"
+              kill -- "-$server_pid" 2>/dev/null || true
+              wait "$server_pid" 2>/dev/null || true
+              exit 0
+            fi
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              tail -n 120 "$log_file"
+              exit 1
+            fi
+            sleep 1
+          done
+          tail -n 120 "$log_file"
+          kill -- "-$server_pid" 2>/dev/null || true
+          exit 1
       - name: Upload Forge mod
         uses: actions/upload-artifact@v4
         with:
