@@ -4,18 +4,19 @@ import com.betterwhips.BetterWhipsMod;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraftforge.registries.DeferredHolder;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public final class ModEffects {
     public static final DeferredRegister<MobEffect> MOB_EFFECTS =
-            DeferredRegister.create(Registries.MOB_EFFECT, BetterWhipsMod.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, BetterWhipsMod.MOD_ID);
 
-    public static final DeferredHolder<MobEffect, MobEffect> WATER_PROTECTION_READY =
+    public static final RegistryObject<MobEffect> WATER_PROTECTION_READY =
             MOB_EFFECTS.register("water_protection_ready",
                     () -> new MarkerEffect(MobEffectCategory.BENEFICIAL, 0x45DFF4));
 
-    public static final DeferredHolder<MobEffect, MobEffect> WATER_PROTECTION_COOLDOWN =
+    public static final RegistryObject<MobEffect> WATER_PROTECTION_COOLDOWN =
             MOB_EFFECTS.register("water_protection_cooldown",
                     () -> new MarkerEffect(MobEffectCategory.NEUTRAL, 0x4B7182));
 
