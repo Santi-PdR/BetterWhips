@@ -45,6 +45,29 @@ jobs:
           tail -n 120 "$log_file"
           kill -- "-$server_pid" 2>/dev/null || true
           exit 1
+      - name: Smoke test client startup
+        shell: bash
+        run: |
+          set -euo pipefail
+          log_file="$(mktemp)"
+          setsid env LIBGL_ALWAYS_SOFTWARE=1 ALSOFT_DRIVERS=null xvfb-run -a gradle --no-daemon runClient >"$log_file" 2>&1 &
+          client_pid=$!
+          for attempt in $(seq 1 180); do
+            if grep -q 'Sound engine started' "$log_file"; then
+              tail -n 80 "$log_file"
+              kill -- "-$client_pid" 2>/dev/null || true
+              wait "$client_pid" 2>/dev/null || true
+              exit 0
+            fi
+            if ! kill -0 "$client_pid" 2>/dev/null; then
+              tail -n 120 "$log_file"
+              exit 1
+            fi
+            sleep 1
+          done
+          tail -n 120 "$log_file"
+          kill -- "-$client_pid" 2>/dev/null || true
+          exit 1
       - name: Upload Forge mod
         uses: actions/upload-artifact@v4
         with:
