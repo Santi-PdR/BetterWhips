@@ -25,7 +25,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.UUID;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.ItemAbilities;
+import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.ToolAction;
 
 public final class LightningWhipItem
@@ -81,7 +81,7 @@ extends Item {
     }
 
     public boolean canPerformAction(ItemStack stack, ToolAction itemAbility) {
-        return itemAbility == ItemAbilities.SWORD_SWEEP || super.canPerformAction(stack, itemAbility);
+        return itemAbility == ToolActions.SWORD_SWEEP || super.canPerformAction(stack, itemAbility);
     }
 
     @Override

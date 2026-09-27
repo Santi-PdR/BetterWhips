@@ -25,7 +25,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.event.tick.ServerTickEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import java.util.*;
 import static com.betterwhips.physics.SeaRippleWhipTuning.*;
@@ -79,7 +79,8 @@ public final class SeaRippleWhipCombat {
         }
         sync(player,s,tick);
     }
-    public static void onServerTick(ServerTickEvent.Post event) {
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
         long tick=event.getServer().overworld().getGameTime();
         for(ServerPlayer p:event.getServer().getPlayerList().getPlayers())
             if(holding(p) && p.isAlive())STATES.computeIfAbsent(p.getUUID(),key->new State(p,tick));

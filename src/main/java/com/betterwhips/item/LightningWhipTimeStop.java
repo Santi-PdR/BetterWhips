@@ -4,7 +4,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.tick.EntityTickEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -44,7 +44,8 @@ public final class LightningWhipTimeStop {
         }
     }
 
-    public static void onEntityTickPre(EntityTickEvent.Pre event) {
+    public static void onEntityTickPre(TickEvent.EntityTickEvent event) {
+        if (event.phase != TickEvent.Phase.START) return;
         Entity entity = event.getEntity();
         if (!(entity instanceof LivingEntity) || entity.isRemoved()) return;
         Level level = entity.level();

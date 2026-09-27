@@ -52,7 +52,8 @@ public final class SeaRippleWhipPhysics {
             else if(event.getHand()==InteractionHand.MAIN_HAND)SeaRippleWhipClientState.input(SeaRippleWhipNetwork.BLADE);
         }
     }
-    public static void onClientTick(ClientTickEvent.Post event) {
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
         Minecraft mc=Minecraft.getInstance();SeaRippleWhipClientState.tick();SeaRippleWhipEffects.tick();
         if(mc.level!=world){SOCKETS.clear();SeaRippleWhipIdlePhysics.clear();world=mc.level;}
         if(mc.level==null || mc.isPaused())return;

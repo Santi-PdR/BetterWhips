@@ -52,7 +52,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.tick.ServerTickEvent;
+import net.minecraftforge.event.TickEvent;
 
 public final class LightningWhipCombat {
     private static final int SEGMENTS = 56;
@@ -254,7 +254,7 @@ public final class LightningWhipCombat {
         LightningWhipCombat.startOrRetarget(player.serverLevel(), player, InteractionHand.MAIN_HAND, player.getMainArm(), LashMode.PRECISION, 10, snapshot);
     }
 
-    private static void tickPendingPrecisionAttacks(ServerTickEvent.Post event) {
+    private static void tickPendingPrecisionAttacks(TickEvent.ServerTickEvent event) {
         Iterator<Map.Entry<UUID, ArrayDeque<PendingPrecisionRequest>>> iterator = PENDING_PRECISION.entrySet().iterator();
         while (iterator.hasNext()) {
             long nextAllowed;
@@ -296,7 +296,8 @@ public final class LightningWhipCombat {
         state.startAttack(player, mode, cooldownTicks);
     }
 
-    public static void onServerTick(ServerTickEvent.Post event) {
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
         LightningWhipCombat.tickAttackSpeedStacks(event);
         LightningWhipCombat.tickPendingPrecisionAttacks(event);
         LightningWhipChain.tick(event);
@@ -810,7 +811,7 @@ public final class LightningWhipCombat {
         LightningWhipNetwork.sendAttackSpeedStacks(player, state.stacks);
     }
 
-    private static void tickAttackSpeedStacks(ServerTickEvent.Post event) {
+    private static void tickAttackSpeedStacks(TickEvent.ServerTickEvent event) {
         Iterator<Map.Entry<UUID, AttackSpeedStackState>> iterator = ATTACK_SPEED_STACKS.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<UUID, AttackSpeedStackState> entry = iterator.next();

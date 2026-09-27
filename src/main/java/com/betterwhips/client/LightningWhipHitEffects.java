@@ -14,7 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.ClientTickEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +74,8 @@ public final class LightningWhipHitEffects {
             || now-effect.spawnTick > IMPACT_TICKS+1L);
     }
     public static void clear() { ACTIVE.clear(); IMPACTS.clear(); }
-    public static void onClientTick(ClientTickEvent.Post event) { clientTick(); }
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return; clientTick(); }
     public static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) { clear(); }
     public static void onRenderLevel(RenderLevelStageEvent event) {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || ShaderCompat.isIrisShadowPass()) return;

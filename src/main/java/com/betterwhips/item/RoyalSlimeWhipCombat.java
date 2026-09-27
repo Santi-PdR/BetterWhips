@@ -32,7 +32,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.tick.ServerTickEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -246,7 +246,7 @@ public final class RoyalSlimeWhipCombat {
                 LashMode.PRECISION, LEFT_DAMAGE_WINDOW_TICKS, snapshot);
     }
 
-    private static void tickPendingPrecisionAttacks(ServerTickEvent.Post event) {
+    private static void tickPendingPrecisionAttacks(TickEvent.ServerTickEvent event) {
         Iterator<Map.Entry<UUID, ArrayDeque<PendingPrecisionRequest>>> iterator =
                 PENDING_PRECISION.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -301,7 +301,8 @@ public final class RoyalSlimeWhipCombat {
         state.startAttack(player, mode, cooldownTicks);
     }
 
-    public static void onServerTick(ServerTickEvent.Post event) {
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
 
         tickAttackSpeedStacks(event);
 
@@ -2008,7 +2009,7 @@ public final class RoyalSlimeWhipCombat {
         com.betterwhips.network.RoyalSlimeWhipNetwork.sendAttackSpeedStacks(player, state.stacks);
     }
 
-    private static void tickAttackSpeedStacks(ServerTickEvent.Post event) {
+    private static void tickAttackSpeedStacks(TickEvent.ServerTickEvent event) {
         Iterator<Map.Entry<UUID, AttackSpeedStackState>> iterator =
                 ATTACK_SPEED_STACKS.entrySet().iterator();
         while (iterator.hasNext()) {

@@ -7,7 +7,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.tick.ServerTickEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -143,7 +143,8 @@ public final class WhipFriendlySupport {
         target.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, duration, stage));
     }
 
-    public static void onServerTick(ServerTickEvent.Post event) {
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
         int now = event.getServer().getTickCount();
         prune(PET_STATES, now);
         prune(PLAYER_STATES, now);

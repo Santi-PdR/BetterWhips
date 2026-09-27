@@ -26,7 +26,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.UUID;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.ItemAbilities;
+import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.ToolAction;
 
 import java.util.List;
@@ -63,8 +63,8 @@ public final class SeaRippleWhipItem extends Item {
     @Override public int getEnchantmentValue(ItemStack stack) { return ENCHANTMENT_VALUE; }
     @Override public boolean isEnchantable(ItemStack stack) { return stack.getCount() == 1; }
     @Override public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) { return false; }
-    @Override public boolean canPerformAction(ItemStack stack, ItemAbility ability) {
-        return ability == ItemAbilities.SWORD_SWEEP || super.canPerformAction(stack, ability);
+    @Override public boolean canPerformAction(ItemStack stack, ToolAction ability) {
+        return ability == ToolActions.SWORD_SWEEP || super.canPerformAction(stack, ability);
     }
     @Override public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) { return true; }
     @Override public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {}

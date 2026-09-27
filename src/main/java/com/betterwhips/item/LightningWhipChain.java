@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.tick.ServerTickEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,7 +62,8 @@ public final class LightningWhipChain {
         LightningWhipNetwork.sendArcRoute(level, route, seed);
     }
 
-    public static void tick(ServerTickEvent.Post event) {
+    public static void tick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
         Iterator<ActiveChain> iterator = ACTIVE.iterator();
         while (iterator.hasNext()) {
             ActiveChain chain = iterator.next();

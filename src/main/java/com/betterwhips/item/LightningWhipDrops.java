@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
-import net.minecraftforge.event.tick.ServerTickEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -31,7 +31,8 @@ public final class LightningWhipDrops {
         PENDING.addLast(new PendingDrop(level,bolt.position()));
     }
 
-    public static void onServerTick(ServerTickEvent.Post event) {
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
         if(PENDING.isEmpty())return;
         int count=PENDING.size();
         while(count-->0) {

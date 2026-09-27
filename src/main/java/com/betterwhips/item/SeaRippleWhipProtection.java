@@ -9,7 +9,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.living.LivingIncomingDamageEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
-import net.minecraftforge.event.tick.ServerTickEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +43,8 @@ public final class SeaRippleWhipProtection {
         applyMarker(player,ModEffects.WATER_PROTECTION_COOLDOWN,COOLDOWN_TICKS);
     }
 
-    public static void onServerTick(ServerTickEvent.Post event) {
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
         long now=event.getServer().overworld().getGameTime();
         for(ServerPlayer player:event.getServer().getPlayerList().getPlayers()) {
             State state=STATES.computeIfAbsent(player.getUUID(),id->new State());

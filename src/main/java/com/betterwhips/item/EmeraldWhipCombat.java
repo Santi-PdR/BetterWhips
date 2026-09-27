@@ -30,7 +30,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.tick.ServerTickEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -245,7 +245,7 @@ public final class EmeraldWhipCombat {
                 LashMode.PRECISION, LEFT_DAMAGE_WINDOW_TICKS, snapshot);
     }
 
-    private static void tickPendingPrecisionAttacks(ServerTickEvent.Post event) {
+    private static void tickPendingPrecisionAttacks(TickEvent.ServerTickEvent event) {
         Iterator<Map.Entry<UUID, ArrayDeque<PendingPrecisionRequest>>> iterator =
                 PENDING_PRECISION.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -300,7 +300,8 @@ public final class EmeraldWhipCombat {
         state.startAttack(player, mode, cooldownTicks);
     }
 
-    public static void onServerTick(ServerTickEvent.Post event) {
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
         tickEmeraldSplashState(event);
         tickEmeraldBolts(event);
 
@@ -2205,7 +2206,7 @@ public final class EmeraldWhipCombat {
         }
     }
 
-    private static void tickEmeraldSplashState(ServerTickEvent.Post event) {
+    private static void tickEmeraldSplashState(TickEvent.ServerTickEvent event) {
         Iterator<Map.Entry<UUID, EmeraldSplashCharge>> iterator =
                 EMERALD_SPLASH_CHARGES.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -2216,7 +2217,7 @@ public final class EmeraldWhipCombat {
         }
     }
 
-    private static void tickEmeraldBolts(ServerTickEvent.Post event) {
+    private static void tickEmeraldBolts(TickEvent.ServerTickEvent event) {
         Iterator<PendingEmeraldBolt> pendingIterator = PENDING_EMERALD_BOLTS.iterator();
         while (pendingIterator.hasNext()) {
             PendingEmeraldBolt pending = pendingIterator.next();
