@@ -11,7 +11,6 @@ import com.betterwhips.item.EmeraldWhipCombat;
 import com.betterwhips.item.GoldenHeavyWhipCombat;
 import com.betterwhips.item.LeatherWhipCombat;
 import com.betterwhips.item.LightningWhipCombat;
-import com.betterwhips.item.LightningWhipDrops;
 import com.betterwhips.item.LightningWhipTimeStop;
 import com.betterwhips.item.RoyalSlimeWhipCombat;
 import com.betterwhips.item.TrainerWhipCombat;
@@ -19,7 +18,6 @@ import com.betterwhips.item.SeaRippleWhipCombat;
 import com.betterwhips.item.SeaRippleWhipProtection;
 import com.betterwhips.item.WhipFriendlySupport;
 import com.betterwhips.item.WindwhispererWhipCombat;
-import com.betterwhips.item.WindwhispererWhipDrops;
 import com.betterwhips.network.AmethystWhipNetwork;
 import com.betterwhips.network.ChainWhipNetwork;
 import com.betterwhips.network.DestructionWhipNetwork;
@@ -69,9 +67,6 @@ public final class BetterWhipsMod {
         MinecraftForge.EVENT_BUS.addListener(RoyalSlimeWhipCombat::onServerTick);
         MinecraftForge.EVENT_BUS.addListener(LeatherWhipCombat::onServerTick);
         MinecraftForge.EVENT_BUS.addListener(LightningWhipCombat::onServerTick);
-        MinecraftForge.EVENT_BUS.addListener(LightningWhipDrops::onEntityJoinLevel);
-        MinecraftForge.EVENT_BUS.addListener(LightningWhipDrops::onServerTick);
-        MinecraftForge.EVENT_BUS.addListener(LightningWhipDrops::onServerStopped);
         MinecraftForge.EVENT_BUS.addListener(LightningWhipTimeStop::onEntityTickPre);
         MinecraftForge.EVENT_BUS.addListener(ChainWhipCombat::onServerTick);
         MinecraftForge.EVENT_BUS.addListener(GoldenHeavyWhipCombat::onServerTick);
@@ -87,7 +82,6 @@ public final class BetterWhipsMod {
         MinecraftForge.EVENT_BUS.addListener(SeaRippleWhipProtection::onServerStopped);
         MinecraftForge.EVENT_BUS.addListener(DestructionWhipCombat::onServerTick);
         MinecraftForge.EVENT_BUS.addListener(WindwhispererWhipCombat::onServerTick);
-        MinecraftForge.EVENT_BUS.addListener(WindwhispererWhipDrops::onBlockBreak);
         MinecraftForge.EVENT_BUS.addListener(WhipFriendlySupport::onServerTick);
         MinecraftForge.EVENT_BUS.addListener(WhipCommands::register);
     }
