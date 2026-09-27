@@ -4,17 +4,13 @@ import com.betterwhips.BetterWhipsMod;
 import com.betterwhips.client.DestructionWhipClientNetwork;
 import com.betterwhips.item.DestructionWhipCombat;
 import com.betterwhips.physics.DestructionWhipDimensions;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.event.RegisterPayloadHandlersEvent;
-import net.minecraftforge.network.handling.IPayloadContext;
-import net.minecraftforge.network.registration.PayloadRegistrar;
+import com.betterwhips.network.WhipNetwork;
 
 public final class DestructionWhipNetwork {
 
@@ -23,29 +19,12 @@ public final class DestructionWhipNetwork {
 
     private DestructionWhipNetwork() {}
 
-    public static void register(RegisterPayloadHandlersEvent event) {
-
-        PayloadRegistrar registrar = event.registrar("14");
-        registrar.playToServer(
-                PrecisionAttackPayload.TYPE,
-                PrecisionAttackPayload.STREAM_CODEC,
-                DestructionWhipNetwork::handlePrecisionAttack);
-        registrar.playToClient(
-                WhipShockwavePayload.TYPE,
-                WhipShockwavePayload.STREAM_CODEC,
-                DestructionWhipClientNetwork::handleShockwave);
-        registrar.playToClient(
-                AttackSpeedStacksPayload.TYPE,
-                AttackSpeedStacksPayload.STREAM_CODEC,
-                DestructionWhipClientNetwork::handleAttackSpeedStacks);
-        registrar.playToClient(
-                HitGlowBurstPayload.TYPE,
-                HitGlowBurstPayload.STREAM_CODEC,
-                DestructionWhipClientNetwork::handleHitGlowBurst);
-        registrar.playToClient(
-                BodyLaserPayload.TYPE,
-                BodyLaserPayload.STREAM_CODEC,
-                DestructionWhipClientNetwork::handleBodyLaser);
+    public static void register() {
+        WhipNetwork.registerToServer(PrecisionAttackPayload.class, PrecisionAttackPayload.STREAM_CODEC, DestructionWhipNetwork::handlePrecisionAttack);
+        WhipNetwork.registerToClient(WhipShockwavePayload.class, WhipShockwavePayload.STREAM_CODEC, DestructionWhipClientNetwork::handleShockwave);
+        WhipNetwork.registerToClient(AttackSpeedStacksPayload.class, AttackSpeedStacksPayload.STREAM_CODEC, DestructionWhipClientNetwork::handleAttackSpeedStacks);
+        WhipNetwork.registerToClient(HitGlowBurstPayload.class, HitGlowBurstPayload.STREAM_CODEC, DestructionWhipClientNetwork::handleHitGlowBurst);
+        WhipNetwork.registerToClient(BodyLaserPayload.class, BodyLaserPayload.STREAM_CODEC, DestructionWhipClientNetwork::handleBodyLaser);
     }
 
     public static void sendPrecisionAttack() {
@@ -58,7 +37,7 @@ public final class DestructionWhipNetwork {
 
     public static void sendPrecisionAttack(long motionSeed, int targetEntityId,
                                            Vec3 targetEyeOffset, Vec3 endEyeOffset) {
-        PacketDistributor.sendToServer(PrecisionAttackPayload.empty(
+        WhipNetwork.CHANNEL.sendToServer(PrecisionAttackPayload.empty(
                 motionSeed, targetEntityId, targetEyeOffset, endEyeOffset));
     }
 
@@ -76,7 +55,7 @@ public final class DestructionWhipNetwork {
         Vec3 direction = attackDirection == null ? Vec3.ZERO : attackDirection;
         Vec3 targetOffset = targetEyeOffset == null ? Vec3.ZERO : targetEyeOffset;
         Vec3 endOffset = endEyeOffset == null ? Vec3.ZERO : endEyeOffset;
-        PacketDistributor.sendToServer(new PrecisionAttackPayload(
+        WhipNetwork.CHANNEL.sendToServer(new PrecisionAttackPayload(
                 true, motionSeed, targetEntityId, targetOffset, endOffset,
                 substepSeconds, axis, direction, points.clone(), previous.clone()));
     }
@@ -86,7 +65,7 @@ public final class DestructionWhipNetwork {
                 impact.x, impact.y, impact.z, seed);
         for (ServerPlayer player : level.players()) {
             if (player.distanceToSqr(impact) <= 256.0D * 256.0D) {
-                PacketDistributor.sendToPlayer(player, payload);
+                WhipNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), payload);
             }
         }
     }
@@ -95,7 +74,7 @@ public final class DestructionWhipNetwork {
             return;
         }
         int clamped = Math.max(0, Math.min(5, stacks));
-        PacketDistributor.sendToPlayer(player, new AttackSpeedStacksPayload(clamped));
+        WhipNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new AttackSpeedStacksPayload(clamped));
     }
 
     public static void sendHitGlowBurst(ServerLevel level, Vec3 position, Vec3 slashDirection,
@@ -108,7 +87,7 @@ public final class DestructionWhipNetwork {
                 direction.x, direction.y, direction.z, magicMirror, seed);
         for (ServerPlayer player : level.players()) {
             if (player.distanceToSqr(position) <= 128.0D * 128.0D) {
-                PacketDistributor.sendToPlayer(player, payload);
+                WhipNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), payload);
             }
         }
     }
@@ -130,13 +109,13 @@ public final class DestructionWhipNetwork {
         Vec3 center = fallbackFrom.lerp(fallbackTo, 0.5D);
         for (ServerPlayer player : level.players()) {
             if (player.distanceToSqr(center) <= 128.0D * 128.0D) {
-                PacketDistributor.sendToPlayer(player, payload);
+                WhipNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), payload);
             }
         }
     }
 
     private static void handlePrecisionAttack(PrecisionAttackPayload payload,
-                                              IPayloadContext context) {
+                                              WhipNetwork.Context context) {
         if (context.player() instanceof ServerPlayer player) {
             DestructionWhipCombat.PrecisionPoseSnapshot snapshot = payload.hasPose()
                     ? new DestructionWhipCombat.PrecisionPoseSnapshot(
@@ -153,12 +132,10 @@ public final class DestructionWhipNetwork {
                                          Vec3 endEyeOffset, double substepSeconds,
                                          Vec3 handleAxis, Vec3 attackDirection,
                                          Vec3[] points, Vec3[] previous)
-            implements CustomPacketPayload {
-        public static final Type<PrecisionAttackPayload> TYPE = new Type<>(
-                ResourceLocation.fromNamespaceAndPath(
-                        BetterWhipsMod.MOD_ID, "destruction_whip_precision"));
-        public static final StreamCodec<RegistryFriendlyByteBuf, PrecisionAttackPayload> STREAM_CODEC =
-                StreamCodec.of(
+            {
+
+        public static final WhipNetwork.Codec<PrecisionAttackPayload> STREAM_CODEC =
+                WhipNetwork.Codec.of(
                         (buffer, payload) -> {
                             buffer.writeBoolean(payload.hasPose);
                             buffer.writeLong(payload.motionSeed);
@@ -218,48 +195,34 @@ public final class DestructionWhipNetwork {
                     0.0D, Vec3.ZERO, Vec3.ZERO,
                     new Vec3[0], new Vec3[0]);
         }
-
-        @Override
-        public Type<? extends CustomPacketPayload> type() {
-            return TYPE;
-        }
     }
 
-    private static void writeVec3(RegistryFriendlyByteBuf buffer, Vec3 value) {
+    private static void writeVec3(FriendlyByteBuf buffer, Vec3 value) {
         Vec3 safe = value == null ? Vec3.ZERO : value;
         buffer.writeDouble(safe.x);
         buffer.writeDouble(safe.y);
         buffer.writeDouble(safe.z);
     }
 
-    private static Vec3 readVec3(RegistryFriendlyByteBuf buffer) {
+    private static Vec3 readVec3(FriendlyByteBuf buffer) {
         return new Vec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
     }
 
-    public record AttackSpeedStacksPayload(int stacks) implements CustomPacketPayload {
-        public static final Type<AttackSpeedStacksPayload> TYPE = new Type<>(
-                ResourceLocation.fromNamespaceAndPath(
-                        BetterWhipsMod.MOD_ID, "destruction_whip_attack_speed_stacks"));
-        public static final StreamCodec<RegistryFriendlyByteBuf, AttackSpeedStacksPayload> STREAM_CODEC =
-                StreamCodec.of(
+    public record AttackSpeedStacksPayload(int stacks) {
+
+        public static final WhipNetwork.Codec<AttackSpeedStacksPayload> STREAM_CODEC =
+                WhipNetwork.Codec.of(
                         (buffer, payload) -> buffer.writeVarInt(payload.stacks),
                         buffer -> new AttackSpeedStacksPayload(buffer.readVarInt()));
-
-        @Override
-        public Type<? extends CustomPacketPayload> type() {
-            return TYPE;
-        }
     }
 
     public record HitGlowBurstPayload(double x, double y, double z,
                                      double dx, double dy, double dz,
                                      boolean magicMirror, long seed)
-            implements CustomPacketPayload {
-        public static final Type<HitGlowBurstPayload> TYPE = new Type<>(
-                ResourceLocation.fromNamespaceAndPath(
-                        BetterWhipsMod.MOD_ID, "destruction_whip_hit_glow_burst"));
-        public static final StreamCodec<RegistryFriendlyByteBuf, HitGlowBurstPayload> STREAM_CODEC =
-                StreamCodec.of(
+            {
+
+        public static final WhipNetwork.Codec<HitGlowBurstPayload> STREAM_CODEC =
+                WhipNetwork.Codec.of(
                         (buffer, payload) -> {
                             buffer.writeDouble(payload.x);
                             buffer.writeDouble(payload.y);
@@ -275,23 +238,16 @@ public final class DestructionWhipNetwork {
                                 buffer.readDouble(), buffer.readDouble(),
                                 buffer.readDouble(), buffer.readDouble(),
                                 buffer.readBoolean(), buffer.readLong()));
-
-        @Override
-        public Type<? extends CustomPacketPayload> type() {
-            return TYPE;
-        }
     }
 
     public record BodyLaserPayload(int ownerEntityId, int sourceSegment, int targetEntityId,
                                    double fallbackFromX, double fallbackFromY, double fallbackFromZ,
                                    double fallbackToX, double fallbackToY, double fallbackToZ,
                                    float fullWidth, long seed)
-            implements CustomPacketPayload {
-        public static final Type<BodyLaserPayload> TYPE = new Type<>(
-                ResourceLocation.fromNamespaceAndPath(
-                        BetterWhipsMod.MOD_ID, "destruction_whip_body_laser"));
-        public static final StreamCodec<RegistryFriendlyByteBuf, BodyLaserPayload> STREAM_CODEC =
-                StreamCodec.of(
+            {
+
+        public static final WhipNetwork.Codec<BodyLaserPayload> STREAM_CODEC =
+                WhipNetwork.Codec.of(
                         (buffer, payload) -> {
                             buffer.writeVarInt(payload.ownerEntityId);
                             buffer.writeVarInt(payload.sourceSegment);
@@ -310,20 +266,13 @@ public final class DestructionWhipNetwork {
                                 buffer.readDouble(), buffer.readDouble(), buffer.readDouble(),
                                 buffer.readDouble(), buffer.readDouble(), buffer.readDouble(),
                                 buffer.readFloat(), buffer.readLong()));
-
-        @Override
-        public Type<? extends CustomPacketPayload> type() {
-            return TYPE;
-        }
     }
 
     public record WhipShockwavePayload(double x, double y, double z, long seed)
-            implements CustomPacketPayload {
-        public static final Type<WhipShockwavePayload> TYPE = new Type<>(
-                ResourceLocation.fromNamespaceAndPath(
-                        BetterWhipsMod.MOD_ID, "destruction_whip_shockwave"));
-        public static final StreamCodec<RegistryFriendlyByteBuf, WhipShockwavePayload> STREAM_CODEC =
-                StreamCodec.of(
+            {
+
+        public static final WhipNetwork.Codec<WhipShockwavePayload> STREAM_CODEC =
+                WhipNetwork.Codec.of(
                         (buffer, payload) -> {
                             buffer.writeDouble(payload.x);
                             buffer.writeDouble(payload.y);
@@ -333,10 +282,5 @@ public final class DestructionWhipNetwork {
                         buffer -> new WhipShockwavePayload(
                                 buffer.readDouble(), buffer.readDouble(),
                                 buffer.readDouble(), buffer.readLong()));
-
-        @Override
-        public Type<? extends CustomPacketPayload> type() {
-            return TYPE;
-        }
     }
 }
