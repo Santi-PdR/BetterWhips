@@ -57,7 +57,7 @@ public final class SeaRippleWhipItem extends Item {
     }
 
     public static float damageForSpeed(double speedBlocksPerSecond) {
-        return (float)(Math.floor(Math.max(0.0D, speedBlocksPerSecond) / 10.0D) * 5.0D);
+        return 5.0F + (float)(Math.floor(Math.max(0.0D, speedBlocksPerSecond) / 10.0D) * 5.0D);
     }
 
     @Override public int getEnchantmentValue(ItemStack stack) { return ENCHANTMENT_VALUE; }

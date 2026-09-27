@@ -12,9 +12,17 @@ in float arcEnergy;
 flat in float glowLayer;
 out vec4 fragColor;
 
+vec3 safeNormalize(vec3 value, vec3 fallback) {
+    float magnitudeSquared = dot(value, value);
+    if (magnitudeSquared > 1.0e-8 && !isnan(magnitudeSquared) && !isinf(magnitudeSquared)) {
+        return value * inversesqrt(magnitudeSquared);
+    }
+    return fallback;
+}
+
 void main() {
-    vec3 ray=ProjMat[3][3]>.5 ? vec3(0.0,0.0,-1.0) : normalize(viewPosition);
-    vec3 tangent=normalize(viewTangent);
+    vec3 ray=ProjMat[3][3]>.5 ? vec3(0.0,0.0,-1.0) : safeNormalize(viewPosition,vec3(0.0,0.0,-1.0));
+    vec3 tangent=safeNormalize(viewTangent,vec3(0.0,1.0,0.0));
     vec3 radial=viewPosition-viewCenter;
     vec3 side=cross(ray,tangent);
     float crossLength=length(side);
@@ -27,7 +35,7 @@ void main() {
         haze*=1.0-smoothstep(.70,1.0,r);
         emission=vec3(.035,.25,1.0)*haze;
     } else {
-        float facing=abs(dot(normalize(viewNormal),-ray));
+        float facing=abs(dot(safeNormalize(viewNormal,vec3(0.0,0.0,1.0)),-ray));
         emission=mix(vec3(.22,.66,1.0),vec3(.76,.96,1.0),.45+.55*facing)*.58;
     }
     float distance=length(viewPosition);

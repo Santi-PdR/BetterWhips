@@ -55,7 +55,7 @@ public final class WindwhispererWhipItem extends Item {
     }
 
     public static float damageForSpeed(double speedBlocksPerSecond) {
-        return (float)(Math.floor(Math.max(0.0D, speedBlocksPerSecond) / 10.0D) * 0.3D);
+        return 1.0F + (float)(Math.floor(Math.max(0.0D, speedBlocksPerSecond) / 10.0D) * 0.3D);
     }
 
     @Override public int getEnchantmentValue(ItemStack stack) { return ENCHANTMENT_VALUE; }

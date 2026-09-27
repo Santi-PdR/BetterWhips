@@ -16,6 +16,14 @@ out float arcRadius;
 out float arcEnergy;
 flat out float glowLayer;
 
+vec3 safeNormalize(vec3 value, vec3 fallback) {
+    float magnitudeSquared = dot(value, value);
+    if (magnitudeSquared > 1.0e-8 && !isnan(magnitudeSquared) && !isinf(magnitudeSquared)) {
+        return value * inversesqrt(magnitudeSquared);
+    }
+    return fallback;
+}
+
 float seed;
 float strand;
 float mode;
@@ -54,7 +62,7 @@ vec2 displacement(float u) {
 vec3 octDecode(vec2 p) {
     vec3 n=vec3(p,1.0-abs(p.x)-abs(p.y));
     if(n.z<0.0) n.xy=(1.0-abs(n.yx))*vec2(n.x>=0.0?1.0:-1.0,n.y>=0.0?1.0:-1.0);
-    return normalize(n);
+    return safeNormalize(n, vec3(0.0,1.0,0.0));
 }
 void main() {
     seed=floor(Color.r*255.0+.5);
@@ -65,17 +73,17 @@ void main() {
     float scale=exp2((mod(code,128.0)-64.0)/8.0);
     interval=vec2(UV2)*.001;
     clock=GameTime*1200.0*22.0;
-    vec3 tangent=normalize(Normal);
+    vec3 tangent=safeNormalize(Normal,vec3(0.0,1.0,0.0));
     vec3 n=octDecode(vec2(UV1)/32767.0);
-    n=normalize(n-tangent*dot(n,tangent));
-    vec3 b=normalize(cross(tangent,n));
+    n=safeNormalize(n-tangent*dot(n,tangent),vec3(1.0,0.0,0.0));
+    vec3 b=safeNormalize(cross(tangent,n),vec3(0.0,0.0,1.0));
     float u=UV0.x;
     vec2 offset=displacement(u)*scale;
     vec3 center=Position+n*offset.x+b*offset.y;
     vec2 derivative=(displacement(u+.008)-displacement(u-.008))/.016;
-    vec3 electricTangent=normalize(tangent+n*derivative.x+b*derivative.y);
-    vec3 electricN=normalize(n-electricTangent*dot(n,electricTangent));
-    vec3 electricB=normalize(cross(electricTangent,electricN));
+    vec3 electricTangent=safeNormalize(tangent+n*derivative.x+b*derivative.y,tangent);
+    vec3 electricN=safeNormalize(n-electricTangent*dot(n,electricTangent),n);
+    vec3 electricB=safeNormalize(cross(electricTangent,electricN),b);
     float progress=clamp((u-interval.x)/max(.001,interval.y-interval.x),0.0,1.0);
     float taper=mode>.5 ? .85 : mix(1.0,.42,progress);
     float width=strand<.5 ? 1.0 : (strand<2.5 ? .43 : .28);
@@ -85,10 +93,21 @@ void main() {
     vec3 position=center+(UV0.y<0.0 ? vec3(0.0) : radial*radius);
     viewPosition=(ModelViewMat*vec4(position,1.0)).xyz;
     viewCenter=(ModelViewMat*vec4(center,1.0)).xyz;
-    viewTangent=normalize(mat3(ModelViewMat)*electricTangent);
-    viewNormal=normalize(mat3(ModelViewMat)*radial);
+    viewTangent=safeNormalize(mat3(ModelViewMat)*electricTangent,electricTangent);
+    viewNormal=safeNormalize(mat3(ModelViewMat)*radial,electricN);
     arcRadius=radius;
     arcEnergy=Color.a*(.88+.12*sin(u*7.0-GameTime*1200.0*36.0));
     if(strand>2.5) arcEnergy*=.75*(1.0-smoothstep(.76,1.0,progress));
-    gl_Position=ProjMat*vec4(viewPosition,1.0);
+    vec4 clipPosition=ProjMat*vec4(viewPosition,1.0);
+    if(any(isnan(clipPosition)) || any(isinf(clipPosition))) {
+        arcEnergy=0.0;
+        gl_Position=vec4(2.0,2.0,2.0,1.0);
+        return;
+    }
+    if(abs(clipPosition.w)<.05) {
+        clipPosition.xyz*=.05/max(abs(clipPosition.w),1.0e-4);
+        clipPosition.w=clipPosition.w<0.0?-.05:.05;
+        arcEnergy=0.0;
+    }
+    gl_Position=clipPosition;
 }

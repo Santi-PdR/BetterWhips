@@ -58,7 +58,7 @@ public final class DiamondBladeWhipItem extends Item {
 
     public static float damageForSpeed(double speedBlocksPerSecond) {
         double speed = Math.max(0.0D, speedBlocksPerSecond);
-        return (float)(Math.floor(speed / 10.0D) * 0.7D);
+        return 1.0F + (float)(Math.floor(speed / 10.0D) * 0.7D);
     }
 
     @Override

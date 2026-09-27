@@ -58,7 +58,7 @@ extends Item {
 
     public static float damageForSpeed(double speedBlocksPerSecond) {
         double speed = Math.max(0.0, speedBlocksPerSecond);
-        return (float)(Math.floor(speed / 10.0) * 0.5);
+        return 1.0F + (float)(Math.floor(speed / 10.0) * 0.5);
     }
 
     public int getEnchantmentValue(ItemStack stack) {
