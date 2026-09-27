@@ -63,7 +63,7 @@ public final class EmeraldWhipPhysics {
     private static final RenderType RENDER_TYPE = RenderType.entityTranslucent(TEXTURE);
 
     private static final RenderType SPECTRAL_RENDER_TYPE =
-            RenderType.entityTranslucent(TEXTURE);
+            RenderType.entityTranslucentEmissive(TEXTURE);
 
     private static final RenderType TIP_TRAIL_RENDER_TYPE = RenderType.lightning();
 
