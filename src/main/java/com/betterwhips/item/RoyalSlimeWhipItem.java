@@ -147,7 +147,7 @@ public final class RoyalSlimeWhipItem extends Item {
                              int timeCharged) {
 
         if (livingEntity instanceof Player player) {
-            int usedTicks = getUseDuration(stack, livingEntity) - timeCharged;
+            int usedTicks = getUseDuration(stack) - timeCharged;
             if (usedTicks < RIGHT_CHARGE_TICKS) {
                 if (level.isClientSide) {
                     RoyalSlimeWhipPhysics.cancelChargedSlam(player);

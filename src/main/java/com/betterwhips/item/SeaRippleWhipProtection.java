@@ -89,7 +89,7 @@ public final class SeaRippleWhipProtection {
         if(current==null || Math.abs(current.getDuration()-remaining)>5)applyMarker(player,effect,remaining);
     }
 
-    private static void applyMarker(ServerPlayer player,Holder<MobEffect> effect,int duration) {
+    private static void applyMarker(ServerPlayer player,MobEffect effect,int duration) {
         player.addEffect(new MobEffectInstance(effect,duration,0,true,false,true));
     }
 

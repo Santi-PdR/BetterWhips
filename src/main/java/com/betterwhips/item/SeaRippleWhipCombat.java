@@ -108,7 +108,7 @@ public final class SeaRippleWhipCombat {
     private static void boost(Player p,boolean active) {
         var attribute=p.getAttribute(Attributes.ATTACK_SPEED);if(attribute==null)return;
         if(active && !attribute.hasModifier(com.betterwhips.util.WhipAttributeIds.uuid(ATTACK_BOOST)))attribute.addTransientModifier(
-            new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(ATTACK_BOOST),WATER_ATTACK_SPEED_BONUS,AttributeModifier.Operation.MULTIPLY_TOTAL));
+            new AttributeModifier(com.betterwhips.util.WhipAttributeIds.uuid(ATTACK_BOOST),"better_whips sea ripple attack speed",WATER_ATTACK_SPEED_BONUS,AttributeModifier.Operation.MULTIPLY_TOTAL));
         else if(!active)attribute.removeModifier(com.betterwhips.util.WhipAttributeIds.uuid(ATTACK_BOOST));
     }
     private static void tickStroke(ServerPlayer p,State s,long tick) {
